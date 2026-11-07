@@ -12,6 +12,8 @@ param(
     [string]$Sdk = "$env:USERPROFILE\Android\sdk",
     [string]$Gradle = "$env:USERPROFILE\Android\gradle-8.9\bin\gradle.bat",
     [string]$JavaHome = "",
+    [string]$RenderDocLayer = "C:\dev\tools\rdlayer\lib\arm64-v8a\libVkLayer_GLES_RenderDoc.so",
+    [switch]$RenderDoc,
     [switch]$Install
 )
 $ErrorActionPreference = "Stop"
@@ -29,6 +31,11 @@ if (-not ($libs | Where-Object Name -eq 'libmain.so')) { throw "libmain.so not f
 foreach ($l in $libs) { Copy-Item $l.FullName (Join-Path $JniDir $l.Name) -Force }
 $cxx = Join-Path $Ndk "toolchains\llvm\prebuilt\windows-x86_64\sysroot\usr\lib\aarch64-linux-android\libc++_shared.so"
 Copy-Item $cxx $JniDir -Force
+# -RenderDoc: ship RenderDoc's capture layer (debug builds only; start with --vulkan_renderdoc_layer=true).
+if ($RenderDoc) {
+    if (-not (Test-Path $RenderDocLayer)) { throw "RenderDoc layer not found: $RenderDocLayer" }
+    Copy-Item $RenderDocLayer $JniDir -Force
+}
 
 # Release builds would be stripped by Gradle; debug keeps symbols for tombstones.
 Get-ChildItem $JniDir -Filter *.so | ForEach-Object { "{0,-32} {1,8:N1} MB" -f $_.Name, ($_.Length / 1MB) }
