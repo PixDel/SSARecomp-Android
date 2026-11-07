@@ -1,0 +1,39 @@
+plugins {
+    id "com.android.application"
+}
+
+// The native libraries come from the CMake build (tools/android/build.ps1 copies them to
+// app/src/main/jniLibs/arm64-v8a); SDL's Java side is used straight from the SDK's SDL3 checkout.
+def sdlJava = "../../thirdparty/rexglue-sdk/thirdparty/sdl3/android-project/app/src/main/java"
+
+android {
+    namespace "de.pixdel.ssarecomp"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "de.pixdel.ssarecomp"
+        minSdk 29
+        targetSdk 35
+        versionCode 1
+        versionName "0.1.0"
+        ndk { abiFilters "arm64-v8a" }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += [sdlJava]
+        }
+    }
+
+    packaging {
+        // Extracted to the native library folder: the game finds its GPU plugin next to itself.
+        jniLibs { useLegacyPackaging true }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+        }
+    }
+}

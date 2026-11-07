@@ -33,3 +33,10 @@ CMakeUserPresets.json
 # Compiler profile counts (profile-guided build tries)
 *.profraw
 *.profdata
+
+# Android build outputs (native libraries come from the CMake build)
+/android/.gradle/
+/android/build/
+/android/app/build/
+/android/app/src/main/jniLibs/
+/android/local.properties

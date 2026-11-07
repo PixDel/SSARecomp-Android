@@ -76,6 +76,10 @@ set(SSARECOMP_SOURCES
 
 if(WIN32)
     add_executable(ssarecompiled WIN32 ${SSARECOMP_SOURCES})
+elseif(ANDROID)
+    # Android: the game is libmain.so, which SDL's SDLActivity loads and runs (SDL_main).
+    add_library(ssarecompiled SHARED ${SSARECOMP_SOURCES})
+    set_target_properties(ssarecompiled PROPERTIES OUTPUT_NAME main)
 else()
     add_executable(ssarecompiled ${SSARECOMP_SOURCES})
 endif()

@@ -45,7 +45,28 @@
 #include <string>
 #include <thread>
 
+#ifdef _WIN32
 #include <windows.h>  // Sleep, FlushProcessWriteBuffers (the build defines WIN32_LEAN_AND_MEAN and NOMINMAX)
+#else
+#include <atomic>
+#include <linux/membarrier.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+
+namespace {
+// Linux/Android stand-ins. FlushProcessWriteBuffers is a barrier on every thread of the process:
+// membarrier(PRIVATE_EXPEDITED) does the same (registered once); without it a full fence here
+// (the other threads' side then relies on their own seq_cst atomics).
+void FlushProcessWriteBuffers() {
+  static const bool registered =
+      syscall(__NR_membarrier, MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED, 0, 0) == 0;
+  if (!registered || syscall(__NR_membarrier, MEMBARRIER_CMD_PRIVATE_EXPEDITED, 0, 0) != 0) {
+    std::atomic_thread_fence(std::memory_order_seq_cst);
+  }
+}
+void Sleep(unsigned milliseconds) { std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds)); }
+}  // namespace
+#endif
 
 #include <rex/cvar.h>
 #include <rex/hook.h>
