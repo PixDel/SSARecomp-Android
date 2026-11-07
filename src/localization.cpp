@@ -11,6 +11,9 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <SDL3/SDL_locale.h>
+#include <SDL3/SDL_stdinc.h>
 #endif
 
 // Defined in the SDK (xam_user.cpp); both XGetLanguage and ExGetXConfigSetting read this.
@@ -46,6 +49,17 @@ std::string SystemLanguage() {
       return "italian";
     default:
       break;
+  }
+#else
+  // Elsewhere (Android, Linux): the first preferred locale SDL reports, e.g. "de" for German.
+  int count = 0;
+  if (SDL_Locale** locales = SDL_GetPreferredLocales(&count)) {
+    std::string lang = count > 0 && locales[0] && locales[0]->language ? locales[0]->language : "";
+    SDL_free(locales);
+    if (lang == "de") return "german";
+    if (lang == "fr") return "french";
+    if (lang == "es") return "spanish";
+    if (lang == "it") return "italian";
   }
 #endif
   return "english";

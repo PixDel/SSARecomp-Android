@@ -31,6 +31,7 @@ public class SSAActivity extends SDLActivity {
         ArrayList<String> args = new ArrayList<>();
         args.add("--game_data_root=" + rom.getAbsolutePath());
         args.add("--user_data_root=" + userData.getAbsolutePath());
+        args.add("--config_file=" + new File(base, "ssarecomp.toml").getAbsolutePath());
         args.add("--gpu_backend=vulkan");
 
         // Extra arguments for test runs: adb shell am start ... --es args "--a=1 --b=2"
