@@ -33,6 +33,14 @@ public class SSAActivity extends SDLActivity {
         args.add("--user_data_root=" + userData.getAbsolutePath());
         args.add("--config_file=" + new File(base, "ssarecomp.toml").getAbsolutePath());
         args.add("--gpu_backend=vulkan");
+        // A custom Vulkan driver (Mesa Turnip, as emulators use) in files/drivers/ replaces the
+        // system one: Qualcomm's driver draws the 3D scene as one flat colour. Delete the file to go
+        // back to the system driver.
+        File[] drivers = new File(base, "drivers").listFiles((dir, n) -> n.endsWith(".so"));
+        if (drivers != null && drivers.length > 0) {
+            java.util.Arrays.sort(drivers);
+            args.add("--vulkan_driver=" + drivers[0].getAbsolutePath());
+        }
 
         // Extra arguments for test runs: adb shell am start ... --es args "--a=1 --b=2"
         String extra = getIntent() != null ? getIntent().getStringExtra("args") : null;
