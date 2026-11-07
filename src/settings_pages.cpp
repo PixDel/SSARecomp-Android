@@ -5,6 +5,7 @@
 #include <utility>
 
 #include <rex/cvar.h>
+#include <rex/platform.h>
 
 #include "portal_rex/achievements_ui.h"
 #include "portal_rex/discord_presence.h"
@@ -100,6 +101,26 @@ SettingsPage GraphicsPage() {
                 "Kostet etwas Bildrate. Braucht D3D12.",
                 {{"", "Off (1120x704)", "Aus (1120x704)"},
                  {"1280x720", "Native (720p)", "Nativ (720p)"}}};
+#if REX_PLATFORM_ANDROID
+  // Tablets: smaller scenes for the frame rate (scene_size_hook.cpp has the measurements).
+  scene.en = "3D picture size";
+  scene.de = "Gr\xC3\xB6\xC3\x9F" "e des 3D-Bilds";
+  scene.help_en =
+      "The size the 3D scene is drawn at. Smaller is softer but much faster.\n"
+      "Performance: 560x352, a steady 30 FPS on a Snapdragon 8s Gen 3.\n"
+      "Balanced: 700x440, about 28 FPS.\n"
+      "Original: 1120x704 as on the Xbox 360, about 20 FPS.";
+  scene.help_de =
+      "In welcher Gr\xC3\xB6\xC3\x9F" "e die 3D-Szene gezeichnet wird. Kleiner ist weicher, aber "
+      "viel schneller.\n"
+      "Leistung: 560x352, stabile 30 FPS auf einem Snapdragon 8s Gen 3.\n"
+      "Ausgewogen: 700x440, etwa 28 FPS.\n"
+      "Original: 1120x704 wie auf der Xbox 360, etwa 20 FPS.";
+  scene.options = {{"560x352", "Performance (560x352)", "Leistung (560x352)"},
+                   {"700x440", "Balanced (700x440)", "Ausgewogen (700x440)"},
+                   {"840x528", "Sharp (840x528)", "Scharf (840x528)"},
+                   {"", "Original (1120x704)", "Original (1120x704)"}};
+#endif
   scene.restart = true;
   page.settings.push_back(scene);
   page.settings.push_back(

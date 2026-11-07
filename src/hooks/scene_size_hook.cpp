@@ -36,9 +36,13 @@
 #include <rex/cvar.h>
 #include <rex/graphics/edram_layout.h>
 #include <rex/logging.h>
+#include <rex/platform.h>
 #include <rex/ppc/context.h>
 
-REXCVAR_DEFINE_STRING(scene_size, "", "Graphics",
+// Android: a quarter of the pixels by default. The tablet GPUs pay much per pixel for the 360's
+// 4x MSAA and EDRAM emulation; measured on a Snapdragon 8s Gen 3 with Turnip (2026-11-07):
+// 1120x704 20 FPS, 840x528 25, 700x440 28, 640x400 29, 560x352 a steady 30.
+REXCVAR_DEFINE_STRING(scene_size, REX_PLATFORM_ANDROID ? "560x352" : "", "Graphics",
                       "EXPERIMENTAL: draw the 3D scene at this size instead of the Xbox 360's "
                       "1120x704, e.g. 1280x720 (#30). Empty: the game's size")
     .lifecycle(rex::cvar::Lifecycle::kRequiresRestart);
