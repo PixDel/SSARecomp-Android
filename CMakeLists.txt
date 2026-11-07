@@ -85,6 +85,11 @@ else()
 endif()
 
 rexglue_setup_target(ssarecompiled GPU_PLUGINS xenos)
+if(ANDROID AND TARGET ssarecompiled_recomp)
+    # The NDK turns on -fstack-protector-strong and _FORTIFY_SOURCE for everything; in the
+    # recompiled game code (huge functions with local buffers) the checks cost time on every call.
+    target_compile_options(ssarecompiled_recomp PRIVATE -fno-stack-protector -U_FORTIFY_SOURCE)
+endif()
 
 # The developer kit (a separate private repository, tsapZ/SkylandersDevKit): level loading, Lua
 # and level sweeps for test runs. Built only into a developer build folder (a local
