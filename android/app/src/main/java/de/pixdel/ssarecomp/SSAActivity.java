@@ -17,6 +17,17 @@ public class SSAActivity extends SDLActivity {
     private static final String TAG = "SSARecomp";
 
     @Override
+    protected void onCreate(android.os.Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // The on-screen controls, drawn by Android over the game's surface (TouchOverlayView).
+        if (mLayout != null) {
+            mLayout.addView(new TouchOverlayView(this), new android.view.ViewGroup.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+    }
+
+    @Override
     protected String[] getLibraries() {
         return new String[] { "c++_shared", "SDL3", "main" };
     }
