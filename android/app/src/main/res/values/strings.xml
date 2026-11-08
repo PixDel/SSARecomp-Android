@@ -26,4 +26,5 @@
     <string name="setup_not_dll">This is not Lossless.dll (from Lossless Scaling\'s folder on Steam).</string>
     <string name="setup_dll_done">Lossless.dll copied. Switch frame generation on in the game: Menu → Grafik → Frame Generation (very experimental).</string>
     <string name="shortcut_setup">Game files</string>
+    <string name="setup_licenses">Licenses of the included software</string>
 </resources>

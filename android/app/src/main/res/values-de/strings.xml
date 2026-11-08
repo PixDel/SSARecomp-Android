@@ -25,4 +25,5 @@
     <string name="setup_not_dll">Das ist nicht die Lossless.dll (aus dem Ordner von Lossless Scaling auf Steam).</string>
     <string name="setup_dll_done">Lossless.dll kopiert. Frame Generation im Spiel einschalten: Menü → Grafik → Frame Generation (sehr experimentell).</string>
     <string name="shortcut_setup">Spieldateien</string>
+    <string name="setup_licenses">Lizenzen der enthaltenen Software</string>
 </resources>

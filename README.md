@@ -6,23 +6,27 @@
 
 <br>
 
-**An Android port of [SSARecomp](https://github.com/tsapZ/SSARecomp) by [tsapZ](https://github.com/tsapZ)**,
-the native recompilation of **Skylanders: Spyro's Adventure** (Xbox 360, 2011). All the work that
-makes the game run natively (the recompilation, the portal and portal menu, the settings menu,
-the fixes) is tsapZ's and that of the projects it builds on (see [Credits](#credits)); this port
-adds what Android needs: an ARM64 build, a Vulkan driver that draws it right on Adreno GPUs, touch
-controls, a setup screen that installs the game from your ISO, and tuning for tablet GPUs.
+# SSARecomp for Android
+
+**This is an Android port by [PixDel](https://github.com/PixDel) of [SSARecomp](https://github.com/tsapZ/SSARecomp),
+which was developed by [tsapZ](https://github.com/tsapZ).** SSARecomp is the native Windows
+recompilation of **Skylanders: Spyro's Adventure** (Xbox 360, 2011). The recompilation itself and
+everything that makes the game run natively (the portal and portal menu, the settings menu, the
+fixes) is tsapZ's work and that of the projects it builds on (see [Credits](#credits)). The
+Android port is not by tsapZ: it adds what Android needs, namely an ARM64 build, a Vulkan driver
+that draws the game right on Adreno GPUs, touch controls, a setup screen that installs the game
+from your ISO, and tuning for tablet GPUs.
 
 You bring your own copy of the game; nothing of it comes with this project.
 
-> Unofficial fan project. Not affiliated with or endorsed by Activision or Toys for Bob, nor with
-> tsapZ's project: please report problems of the Android version here, not there.
+> Unofficial fan project. Not affiliated with or endorsed by Activision or Toys for Bob. tsapZ
+> doesn't maintain this port: please report problems of the Android version here, not there.
 
 ## Getting started
 
 1. Download the APK from the [Releases](../../releases) page and install it.
 2. Open it and choose your own **Xbox 360 ISO** of Spyro's Adventure (the region-free USA/Europe
-   disc, [which one](docs/README.windows.md#which-disc)). Its files (about 7.4 GB) are copied into
+   disc, [which one](https://github.com/tsapZ/SSARecomp#which-disc)). Its files (about 7.4 GB) are copied into
    the app once and the version is checked; then you can delete the ISO.
 3. Tap **Spielen / Play**.
 
@@ -89,7 +93,8 @@ frames aren't evenly spaced. Off by default.
 ## Building
 
 See [docs/android.md](docs/android.md): Windows host tools, NDK r30, the native build, packaging
-and signing. The Windows version's own documentation is in [docs/README.windows.md](docs/README.windows.md).
+and signing. The Windows version is documented in
+[tsapZ's README](https://github.com/tsapZ/SSARecomp#readme).
 
 ## How it was made
 
@@ -125,4 +130,5 @@ Activision.
 
 The code and documentation in this repository are released under the [MIT license](LICENSE). That
 doesn't cover the game or its data, which you need to own and supply yourself, or the third-party
-components in `thirdparty/` and the bundled driver, which keep their own licenses.
+components in `thirdparty/` and the bundled driver, which keep their own licenses; the app lists
+them on its setup screen ([THIRD_PARTY_NOTICES.md](android/app/src/main/assets/THIRD_PARTY_NOTICES.md)).

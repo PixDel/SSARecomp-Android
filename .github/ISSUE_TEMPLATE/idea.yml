@@ -1,24 +1,23 @@
 name: Idea or request
-description: Something you'd like the games or the launcher to do (a feature, an option, a change)
+description: Something you'd like the Android version to do (a feature, an option, a device)
 labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks! Small or big, every idea is welcome. Say what you'd like and when you'd use it; a picture, or a game where you saw something like it, helps.
+        Thanks! Small or big, every idea is welcome. Say what you'd like and when you'd use it. Ideas for the game itself on Windows belong to [tsapZ/SSARecomp](https://github.com/tsapZ/SSARecomp/issues).
   - type: dropdown
-    id: game
+    id: area
     attributes:
-      label: Game
+      label: Area
       options:
-        - All games
-        - Spyro's Adventure
-        - Giants
-        - Swap Force
-        - Trap Team
-        - SuperChargers
-        - Imaginators
-        - Core of Light (the launcher)
+        - Touch controls
+        - Controllers
+        - Graphics and frame rate
+        - Settings menu
+        - Setup screen
+        - Another device or GPU
+        - Something else
     validations:
       required: true
   - type: textarea

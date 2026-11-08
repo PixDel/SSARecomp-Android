@@ -170,11 +170,44 @@ public class SetupActivity extends Activity {
         playButton.setOnClickListener(v -> startGame());
         col.addView(playButton);
 
+        // The bundled software's licenses (assets/THIRD_PARTY_NOTICES.md).
+        TextView licenses = new TextView(this);
+        licenses.setText(R.string.setup_licenses);
+        licenses.setTextSize(13);
+        licenses.setTextColor(0xFF7FB2FF);
+        licenses.setPadding(dp(8), dp(24), dp(8), dp(8));
+        licenses.setOnClickListener(v -> showLicenses());
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.gravity = Gravity.CENTER_HORIZONTAL;
+        col.addView(licenses, llp);
+
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
         scroll.setBackgroundColor(0xFF101418);
         scroll.addView(col);
         setContentView(scroll);
+    }
+
+    private void showLicenses() {
+        String text;
+        try (InputStream in = getAssets().open("THIRD_PARTY_NOTICES.md")) {
+            text = new String(readStream(in, 1 << 20), "UTF-8");
+        } catch (IOException e) {
+            text = String.valueOf(e.getMessage());
+        }
+        TextView body = new TextView(this);
+        body.setText(text);
+        body.setTextSize(12);
+        body.setTextIsSelectable(true);
+        body.setPadding(dp(16), dp(8), dp(16), dp(8));
+        ScrollView scroll = new ScrollView(this);
+        scroll.addView(body);
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.setup_licenses)
+                .setView(scroll)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     /** Updates the buttons; message replaces the status line if given. */
