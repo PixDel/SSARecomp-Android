@@ -22,6 +22,32 @@ You bring your own copy of the game; nothing of it comes with this project.
 > Unofficial fan project. Not affiliated with or endorsed by Activision or Toys for Bob. tsapZ
 > doesn't maintain this port: please report problems of the Android version here, not there.
 
+## How far it is: playable, not thoroughly tested
+
+This port was made to **run**, and a lot of the work went into getting a steady frame rate on
+**one device**. It has **not been tested in depth**: not every level, not other devices, not
+every setting. Expect things that don't work yet. All tests and measurements were made on:
+
+| | Test device |
+|---|---|
+| Device | **Honor MagicPad 2** (tablet) |
+| Chip | **Qualcomm Snapdragon 8s Gen 3** |
+| GPU | **Adreno 735** |
+| Screen | 3000x1920 (12.3", 16:10) |
+| System | Android 16 (MagicOS) |
+| Graphics driver | Mesa Turnip T30 (bundled) |
+
+Weaker devices will need a smaller 3D picture or won't reach 30 FPS; stronger ones may manage a
+larger one.
+
+**Please help:**
+
+- Anything that doesn't work as it should: open an [issue](../../issues/new/choose) ("Problem").
+  Every report helps, even a short one.
+- **Tell me what your device reaches:** device and chip, the settings you used (3D picture size,
+  driver, frame rate limit) and the FPS you get (Menu → Spiel → FPS-Anzeige shows them). Use the
+  "Performance report" issue form. That is how this table grows past one device.
+
 ## Getting started
 
 1. Download the APK from the [Releases](../../releases) page and install it.
@@ -38,8 +64,8 @@ ISO, a graphics driver, `Lossless.dll`).
 - An Android device with a **Qualcomm Snapdragon (Adreno GPU)** and Android 11 or newer. Other GPUs
   (Mali, Xclipse, PowerVR) aren't supported yet.
 - About 8 GB of free storage (the ISO's files), plus the ISO itself while installing.
-- Tested on an **Honor MagicPad 2 (Snapdragon 8s Gen 3, Adreno 735)**: a steady 30 FPS with the
-  default 3D picture size (560x352).
+- Tested only on an **Honor MagicPad 2 (Snapdragon 8s Gen 3, Adreno 735)**: a steady 30 FPS with
+  the default 3D picture size (560x352).
 
 ## How it plays
 
@@ -50,12 +76,17 @@ ISO, a graphics driver, `Lossless.dll`).
 - **Controllers** work as on PC (the first one is player 1, a second one player 2).
 - **Settings menu**: the touch Menu button, or Back+RB on a controller.
 
-| 3D picture (Menu → Grafik → Größe des 3D-Bilds) | Snapdragon 8s Gen 3 |
+Frame rates measured on the Honor MagicPad 2 (Snapdragon 8s Gen 3, Adreno 735, Turnip T30, frame
+rate limit 30, frame generation off), in the hub and the first chapter:
+
+| 3D picture (Menu → Grafik → Größe des 3D-Bilds) | Honor MagicPad 2 |
 |---|---|
 | Leistung, 560x352 (default) | 30 FPS steady |
 | Ausgewogen, 700x440 | about 28 FPS |
 | Scharf, 840x528 | about 25 FPS |
 | Original, 1120x704 (Xbox 360) | about 20 FPS |
+
+Other devices: please send yours ([Performance report](../../issues/new/choose)).
 
 ## Graphics drivers
 
