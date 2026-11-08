@@ -125,8 +125,11 @@ public class TouchOverlayView extends View implements Choreographer.FrameCallbac
             canvas.drawLine(ex - er * 0.7f, ey - er * 0.7f, ex + er * 0.7f, ey + er * 0.7f, stroke);
         }
         if ((flags & 2) == 0) return;
+        // touch_controls = menu: only the Menu and Portal buttons (the rest is on a controller).
+        boolean menuOnly = (flags & 16) != 0;
 
         for (int c = 0; c < EYE; c++) {
+            if (menuOnly && c != 10 && c != 11) continue;
             float x = last[8 + 3 * c], y = last[9 + 3 * c], r = last[10 + 3 * c];
             boolean isHeld = (held & (1 << c)) != 0;
             boolean face = c <= 3;
@@ -148,6 +151,7 @@ public class TouchOverlayView extends View implements Choreographer.FrameCallbac
             canvas.drawText(LABELS[c], x, baseline, text);
         }
 
+        if (menuOnly) return;
         // The stick: a ring where the thumb went down and the knob under it; a hint while unused.
         boolean stickActive = (flags & 8) != 0;
         float sr = last[7];

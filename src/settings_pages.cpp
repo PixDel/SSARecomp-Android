@@ -67,6 +67,19 @@ Setting PresetSetting() {
 
 SettingsPage GraphicsPage() {
   SettingsPage page{"Graphics", "Grafik", {}};
+#if REX_PLATFORM_ANDROID
+  // Tablets: no presets or resolution multiples (1x is all a tablet GPU manages; the 3D picture
+  // size below is the knob), and the frame rate here instead of a page of its own: the PC's
+  // VSync, render path, graphics card and interface rows don't exist on Android.
+  page.settings.push_back(
+      {"frame_rate_limit", "Frame rate", "Bildrate",
+       "30: as on the console, steady on a Snapdragon 8s Gen 3.\n"
+       "60: only for strong devices; the game keeps its normal speed either way.",
+       "30: wie auf der Konsole, stabil auf einem Snapdragon 8s Gen 3.\n"
+       "60: nur f\xC3\xBCr starke Ger\xC3\xA4te; das Spiel l\xC3\xA4uft so oder so normal "
+       "schnell.",
+       {{"30", "30 (as on the console)", "30 (wie auf der Konsole)"}, {"60", "60", "60"}}});
+#else
   page.settings.push_back(PresetSetting());
   page.settings.push_back(
       {"resolution_scale", "Internal resolution", "Interne Aufl\xC3\xB6sung",
@@ -85,6 +98,7 @@ SettingsPage GraphicsPage() {
         {"2", "2x (1440p)", "2x (1440p)"},
         {"3", "3x (4K)", "3x (4K)"},
         {"4", "4x", "4x"}}});
+#endif
   Setting scene{"scene_size", "Native 3D picture (experimental)",
                 "Natives 3D-Bild (experimentell)",
                 "Draws the 3D scene at the screen's size instead of a smaller one.\n"
@@ -128,23 +142,50 @@ SettingsPage GraphicsPage() {
   // Lossless.dll in the app's files folder.
   Setting frame_gen;
   frame_gen.cvar = "frame_generation";
-  frame_gen.en = "Frame generation";
-  frame_gen.de = "Frame Generation";
+  frame_gen.en = "Frame generation (very experimental)";
+  frame_gen.de = "Frame Generation (sehr experimentell)";
   frame_gen.help_en =
+      "VERY EXPERIMENTAL, hardly tested.\n"
       "Lossless Scaling Frame Generation: a computed frame between every two real ones, so 30 "
       "FPS look like 60. Costs some GPU time and adds a little input delay.\n"
       "\n"
-      "Needs Lossless.dll from your own Lossless Scaling (Steam) in Android/data/"
-      "de.pixdel.ssarecomp/files.";
+      "Needs Lossless.dll from your own Lossless Scaling (Steam), imported on the app's setup "
+      "screen (long press on the app icon -> Game files).";
   frame_gen.help_de =
+      "SEHR EXPERIMENTELL, kaum getestet.\n"
       "Lossless Scaling Frame Generation: ein berechnetes Bild zwischen je zwei echten, so wirken "
       "30 FPS wie 60. Kostet etwas Grafikleistung und ein wenig Eingabeverz" "\xC3\xB6" "gerung.\n"
       "\n"
-      "Braucht Lossless.dll aus deinem eigenen Lossless Scaling (Steam) in Android/data/"
-      "de.pixdel.ssarecomp/files.";
+      "Braucht Lossless.dll aus deinem eigenen Lossless Scaling (Steam), importiert im "
+      "Einrichtungsbildschirm der App (lange auf das App-Symbol dr\xC3\xBC" "cken -> "
+      "Spieldateien).";
   frame_gen.options = {{"0", "Off", "Aus"}, {"2", "2x", "2x"}};
   frame_gen.restart = true;  // the display's present mode changes with it
   page.settings.push_back(frame_gen);
+
+  // The Vulkan driver (rexglue vulkan_instance.cpp vulkan_driver_choice; the app passes the
+  // bundled and the imported driver's paths, SSAActivity.java).
+  Setting driver;
+  driver.cvar = "vulkan_driver_choice";
+  driver.en = "Graphics driver";
+  driver.de = "Grafiktreiber";
+  driver.help_en =
+      "Which Vulkan driver draws the game.\n"
+      "Bundled: Mesa Turnip T30 (Mr. Purple), tested on a Snapdragon 8s Gen 3: right and the "
+      "fastest.\n"
+      "Own: a driver imported on the setup screen. Untested.\n"
+      "System: the device's driver. On Adreno it draws the 3D scene wrong.";
+  driver.help_de =
+      "Welcher Vulkan-Treiber das Spiel zeichnet.\n"
+      "Mitgeliefert: Mesa Turnip T30 (Mr. Purple), getestet auf einem Snapdragon 8s Gen 3: "
+      "richtig und am schnellsten.\n"
+      "Eigener: ein im Einrichtungsbildschirm importierter Treiber. Ungetestet.\n"
+      "System: der Treiber des Ger\xC3\xA4ts. Auf Adreno zeichnet er die 3D-Szene falsch.";
+  driver.options = {{"bundled", "Bundled (Turnip T30)", "Mitgeliefert (Turnip T30)"},
+                    {"custom", "Own (imported)", "Eigener (importiert)"},
+                    {"system", "System", "System"}};
+  driver.restart = true;
+  page.settings.push_back(driver);
 #endif
   page.settings.push_back(
       {"present_effect", "Sharpening", "Sch\xC3\xA4rfe",
@@ -204,6 +245,8 @@ SettingsPage GraphicsPage() {
        "\n"
        "Kostet etwa 1 % Bildrate.",
        {{"0", "Off", "Aus"}, {"3", "4x", "4x"}, {"4", "8x", "8x"}, {"5", "16x", "16x"}}});
+#if !REX_PLATFORM_ANDROID
+  // Not on Android: the texture pack's folder is a PC one, and FXAA darkens the picture there too.
   page.settings.push_back(skylanders::HdTexturesSetting());  // the pack's on / off (all six games)
   page.settings.push_back(
       {"swap_post_effect", "Extra edge smoothing", "Zus\xC3\xA4tzliche Kantengl\xC3\xA4ttung",
@@ -217,6 +260,7 @@ SettingsPage GraphicsPage() {
        "(bekannter Fehler).",
        {{"none", "Off", "Aus"}, {"fxaa", "FXAA", "FXAA"}, {"fxaa_extreme", "FXAA strong",
                                                          "FXAA stark"}}});
+#endif
   page.settings.push_back(
       {"bloom_strength", "Glow (bloom)", "Leuchten (Bloom)",
        "A soft glow around bright areas and lights.\n"
@@ -234,6 +278,8 @@ SettingsPage GraphicsPage() {
         {"0.5", "Weak", "Schwach"},
         {"1", "Medium", "Mittel"},
         {"1.5", "Strong", "Stark"}}});
+#if !REX_PLATFORM_ANDROID
+  // Window rows: an Android app is always fullscreen at the screen's size.
   Setting fullscreen{"fullscreen", "Fullscreen", "Vollbild",
                      "Starts the game in fullscreen or in a window.",
                      "Startet das Spiel im Vollbild oder im Fenster."};
@@ -269,6 +315,7 @@ SettingsPage GraphicsPage() {
        "\n"
        "Wenn das an ist, erscheinen am linken Rand zwei Hinweise, die das Spiel sonst au\xC3\x9F" "erhalb "
        "des Bildes h\xC3\xA4lt, und die Abdunklung im Pausenmen\xC3\xBC l\xC3\xA4sst die Seiten hell."});
+#endif
   return page;
 }
 
@@ -346,10 +393,16 @@ SettingsPage GamePage() {
   // are the Xbox 360 language ids the SDK knows. English and German checked in game (menus,
   // subtitles, voices). "auto" follows the Windows display language.
   Setting language{"language", "Language", "Sprache",
-                   "Text and voices.\n"
-                   "Automatic: the language of Windows, if the game has it.",
-                   "Texte und Stimmen.\n"
-                   "Automatisch: die Sprache von Windows, wenn das Spiel sie hat.",
+                   REX_PLATFORM_ANDROID
+                       ? "Text and voices.\n"
+                         "Automatic: the device's language, if the game has it."
+                       : "Text and voices.\n"
+                         "Automatic: the language of Windows, if the game has it.",
+                   REX_PLATFORM_ANDROID
+                       ? "Texte und Stimmen.\n"
+                         "Automatisch: die Sprache des Ger\xC3\xA4ts, wenn das Spiel sie hat."
+                       : "Texte und Stimmen.\n"
+                         "Automatisch: die Sprache von Windows, wenn das Spiel sie hat.",
                    {{"auto", "Automatic", "Automatisch"},
                     {"english", "English", "English"},
                     {"german", "Deutsch", "Deutsch"},
@@ -372,7 +425,9 @@ SettingsPage GamePage() {
                            "eine Minute)."});
   page.settings.push_back(skylanders::MovieSkipSetting());
   page.settings.push_back(skylanders::AchievementsSetting());
-  page.settings.push_back(skylanders::DiscordPresenceSetting());
+#if !REX_PLATFORM_ANDROID
+  page.settings.push_back(skylanders::DiscordPresenceSetting());  // the Discord PC client only
+#endif
   // Spiel beenden / neu starten: a controller alone can't press Alt+F4.
   skylanders::AddQuitSettings(page);
   return page;
@@ -401,6 +456,23 @@ SettingsPage PortalPage() {
                 {"hybrid", "Both (menu + real portal)", "Beides (Men\xC3\xBC + echtes Portal)"},
                 {"usb", "Real USB portal only", "Nur echtes USB-Portal"},
                 {"none", "None", "Keins"}}};
+#if REX_PLATFORM_ANDROID
+  // No USB portal on Android yet (no USB permission flow): the menu's figures or none.
+  mode.help_en =
+      "Where the figures come from.\n"
+      "Virtual: the portal menu (the Portal button) puts figures on.\n"
+      "None: no portal at all.\n"
+      "\n"
+      "A real Portal of Power over USB isn't supported on Android yet.";
+  mode.help_de =
+      "Woher die Figuren kommen.\n"
+      "Virtuell: Das Portal-Men\xC3\xBC (die Portal-Taste) stellt Figuren auf.\n"
+      "Keins: gar kein Portal.\n"
+      "\n"
+      "Ein echtes Portal of Power per USB geht auf Android noch nicht.";
+  mode.options = {{"software", "Virtual (menu)", "Virtuell (Men\xC3\xBC)"},
+                  {"none", "None", "Keins"}};
+#endif
   mode.restart = true;
   page.settings.push_back(mode);
   page.settings.push_back(
@@ -457,13 +529,21 @@ SettingsPage ControlsPage() {
   page.settings.push_back(std::move(overview));
   page.settings.push_back(ButtonSetting(
       "portal_menu_open_buttons", "Portal menu", "Portal-Men\xC3\xBC",
-      "What opens the portal menu on a controller (keyboard: F6). Applies to every controller.\n"
-      "\n"
-      "If the Xbox button also opens the Xbox Game Bar, turn the Game Bar off in Windows.",
-      "Womit sich das Portal-Men\xC3\xBC am Controller \xC3\xB6" "ffnet (Tastatur: F6). Gilt f\xC3\xBCr jeden "
-      "Controller.\n"
-      "\n"
-      "Wenn die Xbox-Taste auch die Xbox Game Bar \xC3\xB6" "ffnet, schalte die Game Bar in Windows aus.",
+      REX_PLATFORM_ANDROID
+          ? "What opens the portal menu on a controller. Applies to every controller. On the "
+            "screen: the Portal button."
+          : "What opens the portal menu on a controller (keyboard: F6). Applies to every "
+            "controller.\n"
+            "\n"
+            "If the Xbox button also opens the Xbox Game Bar, turn the Game Bar off in Windows.",
+      REX_PLATFORM_ANDROID
+          ? "Womit sich das Portal-Men\xC3\xBC am Controller \xC3\xB6" "ffnet. Gilt f\xC3\xBCr jeden "
+            "Controller. Auf dem Bildschirm: die Portal-Taste."
+          : "Womit sich das Portal-Men\xC3\xBC am Controller \xC3\xB6" "ffnet (Tastatur: F6). Gilt "
+            "f\xC3\xBCr jeden Controller.\n"
+            "\n"
+            "Wenn die Xbox-Taste auch die Xbox Game Bar \xC3\xB6" "ffnet, schalte die Game Bar in "
+            "Windows aus.",
       {{"guide,back+start,hold_back", "Xbox, Back+Start, hold Back",
         "Xbox, Back+Start, Back halten"},
        {"guide", "Xbox button only", "Nur Xbox-Taste"},
@@ -499,6 +579,7 @@ SettingsPage ControlsPage() {
       {{"back+rb", "Back+RB", "Back+RB"}, {"back+x", "Back+X", "Back+X"}}));
   // No "Aus" here (it was until 2026-10-23): with it a controller could no longer open this
   // menu, nor its Erfolge or Spiel beenden.
+#if !REX_PLATFORM_ANDROID
   page.settings.push_back(
       {"mnk_mode", "Keyboard and mouse", "Tastatur und Maus",
        "Play with the keyboard as a controller.", "Mit der Tastatur als Controller spielen."});
@@ -510,6 +591,40 @@ SettingsPage ControlsPage() {
        {"2", "Player 2", "Spieler 2"}}};
   keyboard_player.enabled_by = "mnk_mode";  // greyed while the keyboard is off
   page.settings.push_back(keyboard_player);
+#else
+  // The on-screen controls (rexglue touch_input_driver.cpp; drawn by TouchOverlayView). All
+  // apply at once.
+  page.settings.push_back(
+      {"touch_controls", "On-screen controls", "Bildschirm-Steuerung",
+       "Automatic: shown while no controller is connected.\n"
+       "Always: shown with a controller too.\n"
+       "Menu buttons only: just Menu and Portal, for playing with a controller.\n"
+       "Off: none at all; this menu then opens only with a controller (Back+RB).\n"
+       "\n"
+       "The eye button top left hides them for a moment.",
+       "Automatisch: sichtbar, solange kein Controller verbunden ist.\n"
+       "Immer: auch mit Controller sichtbar.\n"
+       "Nur Men\xC3\xBC-Tasten: nur Men\xC3\xBC und Portal, zum Spielen mit Controller.\n"
+       "Aus: gar keine; dieses Men\xC3\xBC \xC3\xB6" "ffnet sich dann nur noch per Controller "
+       "(Back+RB).\n"
+       "\n"
+       "Das Auge oben links blendet sie kurz aus.",
+       {{"auto", "Automatic", "Automatisch"},
+        {"on", "Always", "Immer"},
+        {"menu", "Menu buttons only", "Nur Men\xC3\xBC-Tasten"},
+        {"off", "Off", "Aus"}}});
+  page.settings.push_back(
+      {"touch_controls_opacity", "On-screen controls: opacity", "Bildschirm-Steuerung: Deckkraft",
+       "How see-through the on-screen buttons are.",
+       "Wie durchsichtig die Bildschirm-Tasten sind.",
+       {{"0.25", "Faint", "Schwach"}, {"0.45", "Medium", "Mittel"}, {"0.7", "Strong", "Stark"}}});
+  page.settings.push_back(
+      {"touch_controls_scale", "On-screen controls: size", "Bildschirm-Steuerung: Gr\xC3\xB6\xC3\x9F" "e",
+       "How big the on-screen buttons and the stick are.",
+       "Wie gro\xC3\x9F die Bildschirm-Tasten und der Stick sind.",
+       // Up to 1.2: at 1.4 Y and RB overlap on a 16:10 tablet.
+       {{"0.8", "Small", "Klein"}, {"1", "Medium", "Mittel"}, {"1.2", "Large", "Gro\xC3\x9F"}}});
+#endif
   return page;
 }
 
@@ -542,6 +657,13 @@ SettingsPage ExtrasPage() {
 }
 
 std::vector<SettingsPage> BuildSettingsPages(std::function<void()> open_all_settings) {
+#if REX_PLATFORM_ANDROID
+  // Android: the frame rate is on the graphics page, and no "All settings" (the SDK's list is
+  // made for a mouse and a keyboard).
+  (void)open_all_settings;
+  (void)FrameRatePage;
+  return {GraphicsPage(), GamePage(), PortalPage(), ControlsPage(), ExtrasPage()};
+#endif
   std::vector<SettingsPage> pages = {GraphicsPage(), FrameRatePage(), GamePage(), PortalPage(),
                                      ControlsPage(), ExtrasPage()};
   SettingsPage advanced{"Advanced", "Erweitert", {}};

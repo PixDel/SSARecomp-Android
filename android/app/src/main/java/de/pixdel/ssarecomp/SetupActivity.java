@@ -45,12 +45,22 @@ public class SetupActivity extends Activity {
     public static final String EXTRA_MANAGE = "manage";
     private static final int PICK_ISO = 1;
     private static final int PICK_DLL = 2;
+    private static final int PICK_DRIVER = 3;
     /** Folders on the disc the game never reads (the console's system update). */
     private static final String[] SKIP = { "$SystemUpdate" };
 
     private TextView status;
     private ProgressBar progress;
-    private Button isoButton, dllButton, playButton;
+    private Button isoButton, dllButton, driverButton, playButton;
+    private TextView driverNote;
+
+    /** The driver the player imported (files/drivers/*.so), or null. */
+    public static File importedDriver(File base) {
+        File[] drivers = new File(base, "drivers").listFiles((dir, n) -> n.endsWith(".so"));
+        if (drivers == null || drivers.length == 0) return null;
+        java.util.Arrays.sort(drivers);
+        return drivers[0];
+    }
     private volatile boolean busy;
     private final Handler ui = new Handler(Looper.getMainLooper());
 
@@ -144,6 +154,18 @@ public class SetupActivity extends Activity {
         dllButton.setOnClickListener(v -> pick(PICK_DLL));
         col.addView(dllButton);
 
+        driverButton = button(getString(R.string.setup_pick_driver));
+        driverButton.setOnClickListener(v -> pick(PICK_DRIVER));
+        col.addView(driverButton);
+
+        driverNote = new TextView(this);
+        driverNote.setTextSize(13);
+        driverNote.setTextColor(0xFF9AA4AE);
+        driverNote.setGravity(Gravity.CENTER);
+        driverNote.setPadding(0, dp(6), 0, 0);
+        driverNote.setMaxWidth(dp(640));
+        col.addView(driverNote);
+
         playButton = button(getString(R.string.setup_play));
         playButton.setOnClickListener(v -> startGame());
         col.addView(playButton);
@@ -163,6 +185,11 @@ public class SetupActivity extends Activity {
         isoButton.setText(installed ? R.string.setup_repick_iso : R.string.setup_pick_iso);
         dllButton.setEnabled(!busy);
         dllButton.setText(dll ? R.string.setup_repick_dll : R.string.setup_pick_dll);
+        File driver = importedDriver(base());
+        driverButton.setEnabled(!busy);
+        driverNote.setText(driver != null
+                ? getString(R.string.setup_driver_note_imported, driver.getName())
+                : getString(R.string.setup_driver_note));
         playButton.setVisibility(installed && !busy ? View.VISIBLE : View.GONE);
         if (message != null) {
             status.setText(message);
@@ -189,6 +216,99 @@ public class SetupActivity extends Activity {
         Uri uri = data.getData();
         if (requestCode == PICK_ISO) importIso(uri);
         else if (requestCode == PICK_DLL) importDll(uri);
+        else if (requestCode == PICK_DRIVER) importDriver(uri);
+    }
+
+    /**
+     * Imports a Vulkan driver: a .so, or a .zip as Turnip builds come for emulators (meta.json
+     * naming the library, plus the .so). It replaces any earlier import; the settings menu's
+     * "Grafiktreiber -> Eigener" uses it.
+     */
+    private void importDriver(Uri uri) {
+        setBusy(true);
+        new Thread(() -> {
+            String result;
+            File dir = new File(base(), "drivers");
+            File tmp = new File(base(), "driver.new");
+            try {
+                String name = displayName(uri);
+                byte[] data = readAll(uri, 256 << 20);
+                byte[] so = null;
+                String soName = null;
+                if (isElf(data)) {
+                    so = data;
+                    soName = name;
+                } else {
+                    String wanted = null;
+                    java.util.Map<String, byte[]> sos = new java.util.TreeMap<>();
+                    try (java.util.zip.ZipInputStream zip =
+                                 new java.util.zip.ZipInputStream(new java.io.ByteArrayInputStream(data))) {
+                        java.util.zip.ZipEntry e;
+                        while ((e = zip.getNextEntry()) != null) {
+                            String n = new File(e.getName()).getName();
+                            if (n.equals("meta.json")) {
+                                java.util.regex.Matcher m = java.util.regex.Pattern
+                                        .compile("\"libraryName\"\\s*:\\s*\"([^\"]+)\"")
+                                        .matcher(new String(readStream(zip, 1 << 20), "UTF-8"));
+                                if (m.find()) wanted = m.group(1);
+                            } else if (n.endsWith(".so")) {
+                                sos.put(n, readStream(zip, 256 << 20));
+                            }
+                        }
+                    }
+                    if (wanted != null && sos.containsKey(wanted)) soName = wanted;
+                    else if (!sos.isEmpty()) soName = sos.keySet().iterator().next();
+                    if (soName != null) so = sos.get(soName);
+                }
+                if (so == null || !isElf(so)) throw new UserError(getString(R.string.setup_not_driver));
+                if (soName == null || !soName.endsWith(".so")) soName = "vulkan.custom.so";
+                soName = soName.replaceAll("[^A-Za-z0-9._-]", "_");
+                try (OutputStream out = new FileOutputStream(tmp)) { out.write(so); }
+                deleteTree(dir);
+                if (!dir.mkdirs()) throw new IOException("cannot create " + dir);
+                if (!tmp.renameTo(new File(dir, soName))) throw new IOException("cannot move " + tmp);
+                result = getString(R.string.setup_driver_done, soName);
+            } catch (UserError e) {
+                result = e.getMessage();
+            } catch (Exception e) {
+                Log.e(TAG, "driver import failed", e);
+                result = getString(R.string.setup_failed, String.valueOf(e.getMessage()));
+            }
+            tmp.delete();
+            final String message = result;
+            ui.post(() -> { setBusy(false); refresh(message); });
+        }, "DriverImport").start();
+    }
+
+    private static boolean isElf(byte[] b) {
+        return b.length > 4 && b[0] == 0x7F && b[1] == 'E' && b[2] == 'L' && b[3] == 'F';
+    }
+
+    private byte[] readAll(Uri uri, int max) throws IOException {
+        try (InputStream in = getContentResolver().openInputStream(uri)) {
+            if (in == null) throw new IOException("cannot open " + uri);
+            return readStream(in, max);
+        }
+    }
+
+    private static byte[] readStream(InputStream in, int max) throws IOException {
+        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        byte[] buf = new byte[1 << 16];
+        int n;
+        while ((n = in.read(buf)) > 0) {
+            out.write(buf, 0, n);
+            if (out.size() > max) throw new IOException("file too large");
+        }
+        return out.toByteArray();
+    }
+
+    private String displayName(Uri uri) {
+        try (android.database.Cursor c = getContentResolver().query(uri,
+                new String[] { android.provider.OpenableColumns.DISPLAY_NAME }, null, null, null)) {
+            if (c != null && c.moveToFirst()) return c.getString(0);
+        } catch (Exception ignored) {
+        }
+        return "vulkan.custom.so";
     }
 
     private void setBusy(boolean b) {

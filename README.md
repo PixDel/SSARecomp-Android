@@ -2,191 +2,121 @@
 
 <img src=".github/images/banner.png" alt="Skylanders: Spyro's Adventure, recompiled" width="100%">
 
-<p>
-<a href="https://github.com/tsapZ/SSARecomp/releases"><img src=".github/images/download.png" alt="Download for Windows" width="300" height="56"></a>
-</p>
-
-<p>
-<sub><a href="https://github.com/tsapZ/SkylandersCoreOfLight">Core of Light</a> (the launcher for all six) · <a href="#questions-people-ask">Questions</a> · <a href="#getting-started">Getting started</a> · <a href="#which-disc">Which disc</a> · <a href="#help">Help</a> · <a href="https://github.com/tsapZ/SSARecomp/issues/new/choose">Report a problem</a></sub>
-</p>
-
 </div>
 
 <br>
 
-**Skylanders: Spyro's Adventure** (Xbox 360, 2011) as a native Windows game: a controller, up to
-3x the console's resolution, 60 FPS, no emulator. You bring your own copy of the game; nothing of it
-comes with this project.
+**An Android port of [SSARecomp](https://github.com/tsapZ/SSARecomp) by [tsapZ](https://github.com/tsapZ)**,
+the native recompilation of **Skylanders: Spyro's Adventure** (Xbox 360, 2011). All the work that
+makes the game run natively (the recompilation, the portal and portal menu, the settings menu,
+the fixes) is tsapZ's and that of the projects it builds on (see [Credits](#credits)); this port
+adds what Android needs: an ARM64 build, a Vulkan driver that draws it right on Adreno GPUs, touch
+controls, a setup screen that installs the game from your ISO, and tuning for tablet GPUs.
 
-> Unofficial fan project. Not affiliated with or endorsed by Activision or Toys for Bob.
+You bring your own copy of the game; nothing of it comes with this project.
 
-## Questions people ask
-
-**Can I use my real portal and figures?** Yes. Plug in a Portal of Power and pick F4 > Portal > *USB only*: the game reads your figures and saves their progress on them, as on the console. *Both* uses the real portal and the portal menu together (for the figures you have and the ones you don't) and keeps a backup file of every figure you put on. The PS3, Wii and PC portals work as they are; an Xbox 360 portal needs the WinUSB driver (Zadig), as for Xenia. If yours doesn't work, F4 > Game > *Report a problem*: its log says what the game saw.
-
-**Can I play without figures?** Yes, that's the default (*Virtual*): when the game asks for a Skylander, a menu with every figure opens. Their progress is kept in files in `Documents\Skylanders\Figures`, and one button swaps back to the Skylander you played before.
-
-**Which game do I need? Does my Wii or PS3 copy work?** Your own copy of Spyro's Adventure on Xbox 360: the region-free Xbox 360 disc ([which one exactly](#which-disc)), as an ISO or an extracted folder. The setup takes the game's data from it; nothing of the game comes with this. Wii, PS3 and other versions are different programs and don't work.
-
-**Is this an emulator?** No. The game's code is recompiled into a Windows program, so it runs natively: higher resolutions, 60 FPS and more, a settings menu, the portal menu. Emulators like Dolphin or Xenia run the original game instead; both are fine ways to play.
-
-**Does it run on Linux, Steam Deck or Android handhelds?** It's made for Windows (64-bit) and tested there. Wine / Proton may work but isn't tested much; Android and ARM handhelds aren't supported.
-
-**Was AI used?** Yes, almost all of the code was written with Claude; see [How it was made](#how-it-was-made).
+> Unofficial fan project. Not affiliated with or endorsed by Activision or Toys for Bob, nor with
+> tsapZ's project: please report problems of the Android version here, not there.
 
 ## Getting started
 
-**The easy way:** install [Core of Light](https://github.com/tsapZ/SkylandersCoreOfLight/releases)
-and show it your disc. It downloads this game, sets it up and keeps it up to date, and does the same
-for the other five games.
+1. Download the APK from the [Releases](../../releases) page and install it.
+2. Open it and choose your own **Xbox 360 ISO** of Spyro's Adventure (the region-free USA/Europe
+   disc, [which one](docs/README.windows.md#which-disc)). Its files (about 7.4 GB) are copied into
+   the app once and the version is checked; then you can delete the ISO.
+3. Tap **Spielen / Play**.
 
-**On its own:**
+Long press on the app icon → **Spieldateien / Game files** opens the setup screen again (another
+ISO, a graphics driver, `Lossless.dll`).
 
-1. Download `SSARecompSetup-<version>.exe` from the [Releases](https://github.com/tsapZ/SSARecomp/releases) page.
-2. Run it and pick your disc, as an ISO file or an extracted folder. It checks the version and takes
-   what it needs.
-3. Start the game from the desktop or the Start menu.
+## What you need
 
-What you need:
+- An Android device with a **Qualcomm Snapdragon (Adreno GPU)** and Android 11 or newer. Other GPUs
+  (Mali, Xclipse, PowerVR) aren't supported yet.
+- About 8 GB of free storage (the ISO's files), plus the ISO itself while installing.
+- Tested on an **Honor MagicPad 2 (Snapdragon 8s Gen 3, Adreno 735)**: a steady 30 FPS with the
+  default 3D picture size (560x352).
 
-- Windows 10 or 11 (64-bit) and a graphics card with DirectX 12
-- your own Xbox 360 disc of the game ([which one](#which-disc))
-- a controller (Xbox or compatible); keyboard and mouse work too. A real Portal of Power is optional.
+## How it plays
 
-Tested on a Ryzen 5 5600 with a Radeon RX 6800 XT (32 GB RAM, Windows 11): a steady 60 FPS at 2x (1440p). Without the frame cap the hub runs at about 121 FPS at 2x, with the native 3D picture on.
+- **Touch controls** on the screen, hidden while a controller is connected (Menu → Steuerung →
+  Bildschirm-Steuerung: always, only the menu buttons, or off; opacity and size). The eye button
+  hides them for a moment. The menus (settings, portal, player) work by touch too: tap a row, a
+  tab, a figure, or a button hint at the bottom.
+- **Controllers** work as on PC (the first one is player 1, a second one player 2).
+- **Settings menu**: the touch Menu button, or Back+RB on a controller.
 
-The setup isn't signed, so Windows may say "Windows protected your PC": click **More info**, then
-**Run anyway**. No admin rights needed.
+| 3D picture (Menu → Grafik → Größe des 3D-Bilds) | Snapdragon 8s Gen 3 |
+|---|---|
+| Leistung, 560x352 (default) | 30 FPS steady |
+| Ausgewogen, 700x440 | about 28 FPS |
+| Scharf, 840x528 | about 25 FPS |
+| Original, 1120x704 (Xbox 360) | about 20 FPS |
 
-<br>
+## Graphics drivers
 
-## What you get
+Qualcomm's own Vulkan driver draws the 3D scene wrong (one flat colour), so the app brings a
+**Mesa Turnip** driver: **T30 by Mr. Purple** (PurpleVK, Mesa 26.3), the only one that draws
+everything right in our tests. Menu → Grafik → **Grafiktreiber** picks it (*Mitgeliefert*, the
+default), a driver you imported on the setup screen (*Eigener*, a `.so` or an emulator driver
+`.zip` with `meta.json`), or the system's.
 
-- **A sharper picture:** 1x, 2x or 3x the console's 720p, AMD CAS sharpening and 16x texture
-  filtering, with the presets *Performance*, *Quality* and *Best*.
-- **60 FPS**, or 30 as on the console, or 144 and more. The game keeps its normal speed.
-- **Ultrawide:** a wider window shows more to the sides.
-- **No portal needed:** when the game asks for a Skylander, a menu with every figure opens by itself,
-  in the game's own look. A real USB portal works too, or both at once.
-- **Your figures keep their progress** (level, gold, hats, upgrades) in files you can back up, and
-  each one is backed up before the game first saves over it: the portal menu puts an older version back.
-- **Quick swap:** one button puts the Skylander you played before back on the portal.
-- **Skip any movie:** Start ends the movie that is playing (F4 > Game: off, or A instead).
-- **A settings menu** in the game: graphics, frame rate, language, portal, controls, and *Extras*
-  (no health loss, full gold, always crit, elemental power everywhere, gold and XP multipliers; off by
-  default, and *Show cheats* hides the lot).
-- **Achievements.**
-- **A Discord status,** if you switch it on: the game, your Skylander and the level.
-- **HD texture packs** work too ([how](https://github.com/tsapZ/SwapForceRecomp/blob/main/docs/texture-packs.md)).
-- **Languages:** English and German menus; the disc also has French, Spanish, Italian, Dutch, Danish,
-  Finnish, Norwegian and Swedish.
+What we tried on the Snapdragon 8s Gen 3:
 
-<img src=".github/images/settings.png" alt="The game's settings in Core of Light">
+| Driver | Result |
+|---|---|
+| Turnip T30 (Mr. Purple, PurpleVK 26.3) | right, 30 FPS at 560x352: **bundled** |
+| Qualcomm (system) | 3D scene one flat colour (4x MSAA depth reads as 0) |
+| Turnip K11MCH1 v26 R8 | black 3D scene |
+| Turnip Banner v27 | about every third frame wrong (flicker); right only with `flushall`, then slower than T30 |
 
-<sub>Its settings in Core of Light, the same pages as in the game's own menu (F4). The game's own pictures aren't shown here: they're Activision's.</sub>
+If you try others, please say which device and driver in an issue.
 
-<br>
+## Frame generation (very experimental)
 
-## Controls
+Menu → Grafik → **Frame Generation** puts a computed frame between every two real ones (Lossless
+Scaling's frame generation through [lsfg-vk](https://github.com/PancakeTAS/lsfg-vk)). It needs
+`Lossless.dll` from your own copy of [Lossless Scaling](https://store.steampowered.com/app/993090/)
+(Steam), imported on the setup screen. It is barely tested: on displays fixed at 120 Hz the extra
+frames aren't evenly spaced. Off by default.
 
-The game plays as it always did. On top of that:
+## Not there yet
 
-| | Controller | Keyboard |
-|---|---|---|
-| Portal menu (put figures on) | Guide, or Back + Start | F6 |
-| Take figures off | Back + Y | F5 |
-| Settings | Back + RB | F4 |
-| Achievements | in the settings, under Game | F7 |
-| Which controller plays which player | L3 + R3 | F9 |
+- A real USB Portal of Power (the virtual portal menu works).
+- GPUs other than Adreno.
+- Online play.
 
-The settings menu shows the keyboard keys for the game itself under Controls.
+## Building
 
-<br>
-
-## How far it is
-
-Chapter 1 plays all the way through, cutscenes and voices included, and has been played a lot. The
-rest of the game should work the same way, but nobody has played it to the end yet. If something
-breaks further in, please [tell me](https://github.com/tsapZ/SSARecomp/issues/new/choose).
-
-What's being worked on: [docs/roadmap.md](docs/roadmap.md). Known bugs and the details:
-[docs/STATUS.md](docs/STATUS.md).
-
-<br>
-
-## Help
-
-**The setup says it's the wrong disc.** This port is made for one version of the game (see
-[Which disc](#which-disc)). If you have another one, open an issue with the message (it names the disc's title, region and hash).
-
-**It runs slowly.** Press F4, go to Graphics and pick *Performance*, or a lower internal resolution.
-
-**Where are my saves and figures?** Saves in `Documents\Skylanders\Spyro's Adventure`, figures in
-`Documents\Skylanders\Figures` (shared by all six games). Core of Light can export all of it for a
-new PC.
-
-**Why are there no screenshots of the game?** They'd show its artwork, which belongs to Activision. The picture above is its settings page in Core of Light, the banner our own drawing.
-
-## Which disc
-
-The Xbox 360 disc with a region-free `default.xex` (title `415608AB`), text and voices in ten
-languages. Its SHA-256 is in [docs/game/default.xex.sha256](docs/game/default.xex.sha256); the
-setup, the game and the launcher check it. Another pressing with the same code (another language set, for example) works as well: they also compare the code part of the file ([docs/game/default.xex.code](docs/game/default.xex.code)).
-
-## Reporting a problem
-
-Open an [issue](https://github.com/tsapZ/SSARecomp/issues/new/choose) with the **Problem** form:
-what you did and what happened. It helps a lot to attach the report from Core of Light (**LB**, the
-launcher's settings, > **Report a problem**, or the question it asks after a crash). That's one text
-file on your desktop with the latest logs and settings, your Windows user name taken out. Without
-the launcher, the logs are in the `logs` folder next to the game's exe.
-
-<br>
-
-## Why this exists
-
-I wanted to play the Xbox 360 Skylanders games on my PC with just a controller, no emulator, and
-with a nicer picture. That's really all it is: a private fan project. It's public in case someone
-else wants the same.
+See [docs/android.md](docs/android.md): Windows host tools, NDK r30, the native build, packaging
+and signing. The Windows version's own documentation is in [docs/README.windows.md](docs/README.windows.md).
 
 ## How it was made
 
-To be upfront about it: almost all of the code here was written by [Claude](https://claude.ai) in
-Claude Code, the recompile setup, the fixes, the portal menu, the launcher and the installer, and
-most of the docs too. I decided what to build, said what was broken and played the games a lot. If
-AI-made projects aren't your thing, that's fair.
-
-<br>
-
-## For developers
-
-The game's Xbox 360 code is recompiled to x86-64 with [ReXGlue](https://github.com/rexglue/rexglue-sdk)
-(no CPU emulation); the graphics go through Xenia's D3D12 path. This repository holds only our own
-code: the recompiled game code is made on your PC from your disc's `default.xex` when you build.
-
-Building needs Windows, Visual Studio 2022 (C++ workload and C++ Clang tools), CMake, Ninja, just,
-Git and Python 3, and the extracted disc in `rom/` ([rom/README.md](rom/README.md)). Steps:
-[docs/development.md](docs/development.md), then `just play-release`. `just package-installer` builds
-the setup. All docs: [docs/README.md](docs/README.md).
-
-The banner and the button at the top are drawn by Core of Light's [`tools/make_banner.ps1`](https://github.com/tsapZ/SkylandersCoreOfLight/blob/main/tools/make_banner.ps1).
+Like SSARecomp itself, almost all of the code was written with Claude (Anthropic), tested on the
+device above.
 
 ## Credits
 
-- **[SwapForceRecomp](https://github.com/tsapZ/SwapForceRecomp)** (Skylanders: Swap Force): this
-  project is scaffolded from it; app, portal, menus and tooling come from there.
-- **[GiantsRecomp](https://github.com/TheBiemGamer/GiantsRecomp)** by TheBiemGamer brought
-  Skylanders Giants to PC and is the template SwapForceRecomp started from: build setup, tooling
-  and workflow.
-- **[ReXGlue](https://github.com/rexglue/rexglue-sdk)**, the static recompilation SDK, here in
-  TheBiemGamer's fork with our fixes on top.
-- **[skylanders-portal](https://github.com/TheBiemGamer/skylanders-portal)** by TheBiemGamer:
-  the portal (software and USB), its overlay and the figure catalog, here in a fork with the
-  shared portal and settings menus on top.
-- Figure save-data decoding builds on public reverse-engineering of the Skylanders NFC format,
-  among others **[SkyReader](https://github.com/reedstrm/SkyReader)**.
-- **[extract-xiso](https://github.com/XboxDev/extract-xiso)** is included (prebuilt, unmodified)
-  for the installer (`installer/extract-xiso.LICENSE.txt`).
+- **[SSARecomp](https://github.com/tsapZ/SSARecomp)** by **tsapZ**: the game's recompilation and
+  everything that makes it a native game; this repository is a fork of it. Also by tsapZ:
+  [Core of Light](https://github.com/tsapZ/SkylandersCoreOfLight) and the other Skylanders
+  recompilations ([Giants](https://github.com/tsapZ/GiantsRecomp),
+  [Swap Force](https://github.com/tsapZ/SwapForceRecomp), ...).
+- **[GiantsRecomp](https://github.com/TheBiemGamer/GiantsRecomp)** and
+  **[skylanders-portal](https://github.com/TheBiemGamer/skylanders-portal)** by TheBiemGamer: the
+  template these projects started from, and the portal.
+- **[ReXGlue](https://github.com/rexglue/rexglue-sdk)**, the static recompilation SDK, rooted in
+  [Xenia](https://github.com/xenia-project).
+- **Mesa Turnip** ([Mesa](https://mesa3d.org), MIT), the T30 build by **Mr_Purple_666**, loaded
+  with **[libadrenotools](https://github.com/bylaws/libadrenotools)** by bylaws.
+- **[lsfg-vk](https://github.com/PancakeTAS/lsfg-vk)** by PancakeTAS (in
+  [GameNative's Android build](https://github.com/GameNative/lsfg-vk-android)) for frame
+  generation; Lossless Scaling by THS is not included.
+- **[SDL](https://libsdl.org)**, AMD **FidelityFX** FSR 1 / CAS, DXVK's DXBC translator,
+  [pe-parse](https://github.com/trailofbits/pe-parse).
+- **[extract-xiso](https://github.com/XboxDev/extract-xiso)**, whose disc layout the setup
+  screen's ISO reader follows.
 
 Skylanders is a trademark of Activision. This project is not affiliated with or endorsed by
 Activision.
@@ -195,4 +125,4 @@ Activision.
 
 The code and documentation in this repository are released under the [MIT license](LICENSE). That
 doesn't cover the game or its data, which you need to own and supply yourself, or the third-party
-components in `thirdparty/`, which keep their own licenses.
+components in `thirdparty/` and the bundled driver, which keep their own licenses.

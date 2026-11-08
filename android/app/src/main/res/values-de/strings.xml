@@ -3,7 +3,12 @@
     <string name="setup_intro">Diese App enthält nichts vom Spiel. Wähle dein eigenes Xbox-360-Abbild von Skylanders: Spyro\'s Adventure (eine .iso-Datei, etwa 7,5 GB); seine Dateien werden einmal in die App kopiert. Danach kannst du die ISO löschen.</string>
     <string name="setup_pick_iso">ISO auswählen…</string>
     <string name="setup_repick_iso">Andere ISO auswählen…</string>
-    <string name="setup_pick_dll">Lossless.dll für Frame Generation (optional)…</string>
+    <string name="setup_pick_dll">Lossless.dll für Frame Generation (sehr experimentell, optional)…</string>
+    <string name="setup_pick_driver">Eigenen Grafiktreiber importieren (.zip / .so)…</string>
+    <string name="setup_driver_note">Die App bringt einen getesteten Treiber mit (Mesa Turnip T30). Andere Turnip-Versionen kannst du hier importieren und im Spiel wählen: Menü → Grafik → Grafiktreiber → Eigener. Getestet ist nur T30.</string>
+    <string name="setup_driver_note_imported">Importierter Treiber: %1$s (im Spiel wählen: Menü → Grafik → Grafiktreiber → Eigener). Ungetestet; stimmt das Bild nicht, zurück auf „Mitgeliefert“.</string>
+    <string name="setup_not_driver">Das ist kein Vulkan-Treiber (.so oder eine .zip mit einer darin).</string>
+    <string name="setup_driver_done">Treiber %1$s importiert. Im Spiel wählen: Menü → Grafik → Grafiktreiber → Eigener.</string>
     <string name="setup_repick_dll">Lossless.dll ersetzen…</string>
     <string name="setup_play">Spielen</string>
     <string name="setup_installed">Die Spieldateien sind installiert.</string>
@@ -18,6 +23,6 @@
     <string name="setup_done">Fertig! Das Spiel ist installiert.</string>
     <string name="setup_failed">Etwas ist schiefgegangen: %1$s</string>
     <string name="setup_not_dll">Das ist nicht die Lossless.dll (aus dem Ordner von Lossless Scaling auf Steam).</string>
-    <string name="setup_dll_done">Lossless.dll kopiert. Frame Generation im Spiel einschalten: Menü → Grafik → Frame Generation.</string>
+    <string name="setup_dll_done">Lossless.dll kopiert. Frame Generation im Spiel einschalten: Menü → Grafik → Frame Generation (sehr experimentell).</string>
     <string name="shortcut_setup">Spieldateien</string>
 </resources>

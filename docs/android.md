@@ -25,6 +25,9 @@ version. Developed and measured on an Honor MagicPad 2 (Snapdragon 8s Gen 3, Adr
 
 ## Measured (MagicPad 2, Turnip T30, 2026-11-08)
 
+Frame generation is very experimental (barely tested; uneven on displays fixed at 120 Hz).
+
+
 | 3D picture | guest FPS |
 |---|---|
 | 1120x704 (Xbox 360) | 20 |
@@ -71,8 +74,23 @@ Needs: Visual Studio 2022 (for the Windows host tool), LLVM 19, Android NDK r30
 4. "Spielen". Later starts go straight into the game; a long press on the app icon →
    "Spieldateien" opens the setup screen again (another ISO, another DLL).
 
-The Turnip driver comes with the APK (`libvulkan_turnip.so`, used on Qualcomm/Adreno devices with
-Android 11+); a `.so` in `files/drivers/` still takes precedence.
+The Turnip driver comes with the APK (`libvulkan_turnip.so`, offered on Qualcomm/Adreno devices with
+Android 11+). Menu -> Grafik -> Grafiktreiber (`vulkan_driver_choice`) picks it (`bundled`), a driver
+imported on the setup screen (`custom`, kept in `files/drivers/`; a `.so` or an emulator driver
+`.zip` with `meta.json`) or the system's (`system`). `--vulkan_driver=<path>` still overrides all
+three for tests. The README lists what was tried on which driver.
+
+## Android menu and touch
+
+- The settings menu leaves out what only a PC has (window size, fullscreen, D3D12, VSync, Discord,
+  keyboard and mouse, Problem melden, the SDK's full list); the frame rate (30/60) is on the
+  Grafik page. Spiel beenden closes the app (`SSAActivity.quitGame`).
+- Steuerung -> Bildschirm-Steuerung: `touch_controls` auto / on / menu (Menu and Portal only) / off,
+  plus opacity and size. They apply at once.
+- The menus take taps: rows, tabs, figures, and the button hints at the bottom (menu_draw
+  `TouchHint` presses that button on the touch controller). While a menu is drawn, the on-screen
+  controls step aside (`NoteMenuShown`). Taps reach ImGui through its input queue, so a quick tap
+  inside one frame isn't lost (rexglue imgui_drawer.cpp).
 
 The setup screen (`SetupActivity`, `XisoExtractor`) is plain Java and loads none of the game's
 libraries; the extractor's output was compared file by file with extract-xiso's for the
