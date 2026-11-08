@@ -15,7 +15,7 @@ everything that makes the game run natively (the portal and portal menu, the set
 fixes) is tsapZ's work and that of the projects it builds on (see [Credits](#credits)). The
 Android port is not by tsapZ: it adds what Android needs, namely an ARM64 build, a Vulkan driver
 that draws the game right on Adreno GPUs, touch controls, a setup screen that installs the game
-from your ISO, and tuning for tablet GPUs.
+from your ISO, and tuning for the GPUs of Android phones and tablets.
 
 You bring your own copy of the game; nothing of it comes with this project.
 
