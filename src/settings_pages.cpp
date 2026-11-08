@@ -123,6 +123,29 @@ SettingsPage GraphicsPage() {
 #endif
   scene.restart = true;
   page.settings.push_back(scene);
+#if REX_PLATFORM_ANDROID
+  // Frame generation (Lossless Scaling, the presenter's lsfg integration): needs the player's own
+  // Lossless.dll in the app's files folder.
+  Setting frame_gen;
+  frame_gen.cvar = "frame_generation";
+  frame_gen.en = "Frame generation";
+  frame_gen.de = "Frame Generation";
+  frame_gen.help_en =
+      "Lossless Scaling Frame Generation: a computed frame between every two real ones, so 30 "
+      "FPS look like 60. Costs some GPU time and adds a little input delay.\n"
+      "\n"
+      "Needs Lossless.dll from your own Lossless Scaling (Steam) in Android/data/"
+      "de.pixdel.ssarecomp/files.";
+  frame_gen.help_de =
+      "Lossless Scaling Frame Generation: ein berechnetes Bild zwischen je zwei echten, so wirken "
+      "30 FPS wie 60. Kostet etwas Grafikleistung und ein wenig Eingabeverz" "\xC3\xB6" "gerung.\n"
+      "\n"
+      "Braucht Lossless.dll aus deinem eigenen Lossless Scaling (Steam) in Android/data/"
+      "de.pixdel.ssarecomp/files.";
+  frame_gen.options = {{"0", "Off", "Aus"}, {"2", "2x", "2x"}};
+  frame_gen.restart = true;  // the display's present mode changes with it
+  page.settings.push_back(frame_gen);
+#endif
   page.settings.push_back(
       {"present_effect", "Sharpening", "Sch\xC3\xA4rfe",
        "How the finished picture is scaled to your window.\n"

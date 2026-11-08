@@ -19,11 +19,43 @@ public class SSAActivity extends SDLActivity {
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferSixtyHertz();
         // The on-screen controls, drawn by Android over the game's surface (TouchOverlayView).
         if (mLayout != null) {
             mLayout.addView(new TouchOverlayView(this), new android.view.ViewGroup.LayoutParams(
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+    }
+
+    /**
+     * Asks for the display's 60 Hz mode: the game runs at up to 60 (30 on most tablets) and paces
+     * evenly only on a rate its frames divide (a 30 FPS frame is 4.8 refreshes at 144 Hz), and
+     * frame generation shows its frame and the real one on consecutive refreshes. Many tablets fix
+     * 120 Hz by policy; a window's preferred mode still wins there.
+     */
+    private void preferSixtyHertz() {
+        try {
+            android.view.Display display = getWindowManager().getDefaultDisplay();
+            android.view.Display.Mode current = display.getMode();
+            android.view.Display.Mode best = null;
+            for (android.view.Display.Mode mode : display.getSupportedModes()) {
+                if (mode.getPhysicalWidth() != current.getPhysicalWidth()
+                        || mode.getPhysicalHeight() != current.getPhysicalHeight()) {
+                    continue;
+                }
+                if (Math.abs(mode.getRefreshRate() - 60.0f) < 1.0f) {
+                    best = mode;
+                }
+            }
+            if (best != null) {
+                android.view.WindowManager.LayoutParams params = getWindow().getAttributes();
+                params.preferredDisplayModeId = best.getModeId();
+                getWindow().setAttributes(params);
+                Log.i(TAG, "display mode " + best.getModeId() + " (" + best.getRefreshRate() + " Hz) asked");
+            }
+        } catch (Throwable t) {
+            Log.w(TAG, "no 60 Hz display mode: " + t);
         }
     }
 
@@ -60,5 +92,21 @@ public class SSAActivity extends SDLActivity {
         }
         Log.i(TAG, "arguments: " + args);
         return args.toArray(new String[0]);
+    }
+
+    /**
+     * Called by the game (settings menu, any thread): starts the game again, for settings that
+     * apply only at start-up. A helper in its own process (RestartActivity) waits for this process
+     * to end and then opens the game, with the same test arguments if there were any.
+     */
+    public void restartGame() {
+        android.content.Intent intent = new android.content.Intent(this, RestartActivity.class);
+        intent.putExtra(RestartActivity.EXTRA_PID, android.os.Process.myPid());
+        String extra = getIntent() != null ? getIntent().getStringExtra("args") : null;
+        if (extra != null) intent.putExtra("args", extra);
+        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        Log.i(TAG, "restarting");
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }
