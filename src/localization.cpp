@@ -87,7 +87,7 @@ void ApplyLanguageSetting() {
   std::string setting = Lower(REXCVAR_GET(language));
   if (setting == "auto") {
     setting = SystemLanguage();
-    REXLOG_INFO("Language: auto, from the Windows display language");
+    REXLOG_INFO("Language: auto, from the system language");
   }
   if (auto it = kNames.find(setting); it != kNames.end()) {
     REXCVAR_SET(user_language, it->second);

@@ -12,15 +12,15 @@ version. Developed and measured on an Honor MagicPad 2 (Snapdragon 8s Gen 3, Adr
   MrPurple's "T30", PurpleVK 26.3). `--vulkan_driver=<path>` picks another one for a test.
   Plain Mesa builds (K11MCH1 v26 R8, Banner v27) flicker or draw black: see *Open problems*.
 - **3D picture size.** Tablet GPUs pay a lot per pixel for the 360's 4x MSAA and EDRAM emulation.
-  The default 3D scene on Android is 560x352 (`scene_size`); the settings menu (Grafik →
-  Größe des 3D-Bilds) offers 560x352 / 700x440 / 840x528 / 1120x704.
+  The default 3D scene on Android is 560x352 (`scene_size`); the settings menu (Graphics →
+  3D picture size) offers 560x352 / 700x440 / 840x528 / 1120x704.
 - **Touch controls**, drawn by an Android view over the game (`TouchOverlayView`), hidden
   while a controller is connected (`touch_controls` auto/on/off). The eye button hides them.
 - **Settings menu** on the touch Menu button (or Back+RB on a controller). Changes that need a
   restart offer it right away; the app restarts itself (`RestartActivity`).
 - **Frame generation** (optional): Lossless Scaling Frame Generation through lsfg-vk's framegen
   library. Needs the player's own `Lossless.dll` (from Lossless Scaling on Steam) copied to
-  `Android/data/de.pixdel.ssarecomp/files/Lossless.dll`; Grafik → Frame Generation.
+  `Android/data/de.pixdel.ssarecomp/files/Lossless.dll`; Graphics → Frame generation.
 - **Display rate.** The app asks for the 60 Hz display mode (a 30 FPS game paces evenly there).
 
 ## Measured (MagicPad 2, Turnip T30, 2026-11-08)
@@ -71,11 +71,11 @@ Needs: Visual Studio 2022 (for the Windows host tool), LLVM 19, Android NDK r30
    deleted afterwards. Needs the ISO's size in free storage.
 3. Optional: the same screen takes `Lossless.dll` (from Lossless Scaling on Steam) for frame
    generation.
-4. "Spielen". Later starts go straight into the game; a long press on the app icon →
-   "Spieldateien" opens the setup screen again (another ISO, another DLL).
+4. "Play". Later starts go straight into the game; a long press on the app icon →
+   "Game files" opens the setup screen again (another ISO, another DLL).
 
 The Turnip driver comes with the APK (`libvulkan_turnip.so`, offered on Qualcomm/Adreno devices with
-Android 11+). Menu -> Grafik -> Grafiktreiber (`vulkan_driver_choice`) picks it (`bundled`), a driver
+Android 11+). Menu -> Graphics -> Graphics driver (`vulkan_driver_choice`) picks it (`bundled`), a driver
 imported on the setup screen (`custom`, kept in `files/drivers/`; a `.so` or an emulator driver
 `.zip` with `meta.json`) or the system's (`system`). `--vulkan_driver=<path>` still overrides all
 three for tests. The README lists what was tried on which driver.
@@ -83,9 +83,9 @@ three for tests. The README lists what was tried on which driver.
 ## Android menu and touch
 
 - The settings menu leaves out what only a PC has (window size, fullscreen, D3D12, VSync, Discord,
-  keyboard and mouse, Problem melden, the SDK's full list); the frame rate (30/60) is on the
-  Grafik page. Spiel beenden closes the app (`SSAActivity.quitGame`).
-- Steuerung -> Bildschirm-Steuerung: `touch_controls` auto / on / menu (Menu and Portal only) / off,
+  keyboard and mouse, Report a problem, the SDK's full list); the frame rate (30/60) is on the
+  Graphics page. Quit the game closes the app (`SSAActivity.quitGame`).
+- Controls -> On-screen controls: `touch_controls` auto / on / menu (Menu and Portal only) / off,
   plus opacity and size. They apply at once.
 - The menus take taps: rows, tabs, figures, and the button hints at the bottom (menu_draw
   `TouchHint` presses that button on the touch controller). While a menu is drawn, the on-screen

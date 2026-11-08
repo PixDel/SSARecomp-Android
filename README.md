@@ -45,7 +45,7 @@ larger one.
 - Anything that doesn't work as it should: open an [issue](../../issues/new/choose) ("Problem").
   Every report helps, even a short one.
 - **Tell me what your device reaches:** device and chip, the settings you used (3D picture size,
-  driver, frame rate limit) and the FPS you get (Menu → Spiel → FPS-Anzeige shows them). Use the
+  driver, frame rate limit) and the FPS you get (Menu → Game → Frame rate display shows them). Use the
   "Performance report" issue form. That is how this table grows past one device.
 
 ## Getting started
@@ -54,9 +54,9 @@ larger one.
 2. Open it and choose your own **Xbox 360 ISO** of Spyro's Adventure (the region-free USA/Europe
    disc, [which one](https://github.com/tsapZ/SSARecomp#which-disc)). Its files (about 7.4 GB) are copied into
    the app once and the version is checked; then you can delete the ISO.
-3. Tap **Spielen / Play**.
+3. Tap **Play**.
 
-Long press on the app icon → **Spieldateien / Game files** opens the setup screen again (another
+Long press on the app icon → **Game files** opens the setup screen again (another
 ISO, a graphics driver, `Lossless.dll`).
 
 ## What you need
@@ -69,8 +69,8 @@ ISO, a graphics driver, `Lossless.dll`).
 
 ## How it plays
 
-- **Touch controls** on the screen, hidden while a controller is connected (Menu → Steuerung →
-  Bildschirm-Steuerung: always, only the menu buttons, or off; opacity and size). The eye button
+- **Touch controls** on the screen, hidden while a controller is connected (Menu → Controls →
+  On-screen controls: always, only the menu buttons, or off; opacity and size). The eye button
   hides them for a moment. The menus (settings, portal, player) work by touch too: tap a row, a
   tab, a figure, or a button hint at the bottom.
 - **Controllers** work as on PC (the first one is player 1, a second one player 2).
@@ -79,11 +79,11 @@ ISO, a graphics driver, `Lossless.dll`).
 Frame rates measured on the Honor MagicPad 2 (Snapdragon 8s Gen 3, Adreno 735, Turnip T30, frame
 rate limit 30, frame generation off), in the hub and the first chapter:
 
-| 3D picture (Menu → Grafik → Größe des 3D-Bilds) | Honor MagicPad 2 |
+| 3D picture size (Menu → Graphics → 3D picture size) | Honor MagicPad 2 |
 |---|---|
-| Leistung, 560x352 (default) | 30 FPS steady |
-| Ausgewogen, 700x440 | about 28 FPS |
-| Scharf, 840x528 | about 25 FPS |
+| Performance, 560x352 (default) | 30 FPS steady |
+| Balanced, 700x440 | about 28 FPS |
+| Sharp, 840x528 | about 25 FPS |
 | Original, 1120x704 (Xbox 360) | about 20 FPS |
 
 Other devices: please send yours ([Performance report](../../issues/new/choose)).
@@ -92,8 +92,8 @@ Other devices: please send yours ([Performance report](../../issues/new/choose))
 
 Qualcomm's own Vulkan driver draws the 3D scene wrong (one flat colour), so the app brings a
 **Mesa Turnip** driver: **T30 by Mr. Purple** (PurpleVK, Mesa 26.3), the only one that draws
-everything right in our tests. Menu → Grafik → **Grafiktreiber** picks it (*Mitgeliefert*, the
-default), a driver you imported on the setup screen (*Eigener*, a `.so` or an emulator driver
+everything right in our tests. Menu → Graphics → **Graphics driver** picks it (*Bundled*, the
+default), a driver you imported on the setup screen (*Own*, a `.so` or an emulator driver
 `.zip` with `meta.json`), or the system's.
 
 What we tried on the Snapdragon 8s Gen 3:
@@ -109,7 +109,7 @@ If you try others, please say which device and driver in an issue.
 
 ## Frame generation (very experimental)
 
-Menu → Grafik → **Frame Generation** puts a computed frame between every two real ones (Lossless
+Menu → Graphics → **Frame generation** puts a computed frame between every two real ones (Lossless
 Scaling's frame generation through [lsfg-vk](https://github.com/PancakeTAS/lsfg-vk)). It needs
 `Lossless.dll` from your own copy of [Lossless Scaling](https://store.steampowered.com/app/993090/)
 (Steam), imported on the setup screen. It is barely tested: on displays fixed at 120 Hz the extra

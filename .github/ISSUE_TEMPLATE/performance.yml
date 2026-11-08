@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks! The port was tuned on one device only (Honor MagicPad 2, Snapdragon 8s Gen 3). Your numbers show what other devices manage. Switch on Menu > Spiel > FPS-Anzeige to see the frame rate.
+        Thanks! The port was tuned on one device only (Honor MagicPad 2, Snapdragon 8s Gen 3). Your numbers show what other devices manage. Switch on Menu > Game > Frame rate display to see the frame rate.
   - type: input
     id: device
     attributes:
@@ -28,11 +28,11 @@ body:
     id: size
     attributes:
       label: 3D picture size
-      description: Menu > Grafik > Größe des 3D-Bilds
+      description: Menu > Graphics > 3D picture size
       options:
-        - Leistung (560x352)
-        - Ausgewogen (700x440)
-        - Scharf (840x528)
+        - Performance (560x352)
+        - Balanced (700x440)
+        - Sharp (840x528)
         - Original (1120x704)
     validations:
       required: true

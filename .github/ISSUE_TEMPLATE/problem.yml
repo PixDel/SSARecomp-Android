@@ -47,7 +47,7 @@ body:
     id: driver
     attributes:
       label: Graphics driver
-      description: Menu > Grafik > Grafiktreiber
+      description: Menu > Graphics > Graphics driver
       options:
         - Bundled (Turnip T30)
         - Own (imported), name it below
