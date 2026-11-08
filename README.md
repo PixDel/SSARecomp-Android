@@ -8,14 +8,17 @@
 
 # SSARecomp for Android
 
-**This is an Android port by [PixDel](https://github.com/PixDel) of [SSARecomp](https://github.com/tsapZ/SSARecomp),
-which was developed by [tsapZ](https://github.com/tsapZ).** SSARecomp is the native Windows
-recompilation of **Skylanders: Spyro's Adventure** (Xbox 360, 2011). The recompilation itself and
-everything that makes the game run natively (the portal and portal menu, the settings menu, the
-fixes) is tsapZ's work and that of the projects it builds on (see [Credits](#credits)). The
-Android port is not by tsapZ: it adds what Android needs, namely an ARM64 build, a Vulkan driver
-that draws the game right on Adreno GPUs, touch controls, a setup screen that installs the game
-from your ISO, and tuning for the GPUs of Android phones and tablets.
+**An Android port of [SSARecomp](https://github.com/tsapZ/SSARecomp), developed by
+[tsapZ](https://github.com/tsapZ):** the native recompilation of **Skylanders: Spyro's Adventure**
+(Xbox 360, 2011). The recompilation itself and everything that makes the game run natively (the
+portal and portal menu, the settings menu, the fixes) is tsapZ's work and that of the projects it
+builds on (see [Credits](#credits)). This port adds what Android needs: an ARM64 build, a Vulkan
+driver that draws the game right on Adreno GPUs, touch controls, a setup screen that installs the
+game from your ISO, and tuning for the GPUs of Android phones and tablets.
+
+> **Playing on PC?** SSARecomp is one of six Skylanders games tsapZ brought to PC natively.
+> **[Skylanders: Core of Light](https://github.com/tsapZ/SkylandersCoreOfLight)** is the launcher
+> for all of them: show it your discs and it sets up and updates every game. Well worth a look.
 
 You bring your own copy of the game; nothing of it comes with this project.
 
