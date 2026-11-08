@@ -1,10 +1,12 @@
 <#
 .SYNOPSIS
 Builds the Android APK: copies the native libraries of the CMake build (out/build/android-arm64)
-into android/app/src/main/jniLibs/arm64-v8a and runs Gradle's assembleDebug.
+into android/app/src/main/jniLibs/arm64-v8a, adds the Turnip driver the app falls back to
+(libvulkan_turnip.so) and runs Gradle's assembleDebug, or assembleRelease with -Release (signed
+with the key named in C:/dev/keys/ssarecomp-release.properties, see android/app/build.gradle).
 
 .USAGE
-    tools\android\build.ps1 [-Ndk <path>] [-Install]
+    tools\android\build.ps1 [-Ndk <path>] [-Release] [-Install]
 Build the native side first (see docs/android.md). -Install also installs the APK with adb.
 #>
 param(
@@ -13,7 +15,9 @@ param(
     [string]$Gradle = "$env:USERPROFILE\Android\gradle-8.9\bin\gradle.bat",
     [string]$JavaHome = "",
     [string]$RenderDocLayer = "C:\dev\tools\rdlayer\lib\arm64-v8a\libVkLayer_GLES_RenderDoc.so",
+    [string]$Driver = "C:\dev\tools\turnip\T30\vulkan.purple.so",
     [switch]$RenderDoc,
+    [switch]$Release,
     [switch]$Install
 )
 $ErrorActionPreference = "Stop"
@@ -31,6 +35,9 @@ if (-not ($libs | Where-Object Name -eq 'libmain.so')) { throw "libmain.so not f
 foreach ($l in $libs) { Copy-Item $l.FullName (Join-Path $JniDir $l.Name) -Force }
 $cxx = Join-Path $Ndk "toolchains\llvm\prebuilt\windows-x86_64\sysroot\usr\lib\aarch64-linux-android\libc++_shared.so"
 Copy-Item $cxx $JniDir -Force
+# The Turnip driver (Mesa, MIT): SSAActivity uses it on Adreno GPUs unless files/drivers has one.
+if (Test-Path $Driver) { Copy-Item $Driver (Join-Path $JniDir "libvulkan_turnip.so") -Force }
+else { Write-Warning "Turnip driver not found ($Driver): the APK uses the system driver" }
 # -RenderDoc: ship RenderDoc's capture layer (debug builds only; start with --vulkan_renderdoc_layer=true).
 if ($RenderDoc) {
     if (-not (Test-Path $RenderDocLayer)) { throw "RenderDoc layer not found: $RenderDocLayer" }
@@ -49,12 +56,14 @@ Push-Location (Join-Path $Root "android")
 try {
     # Gradle writes notes to stderr; PowerShell 5.1 would treat them as errors under "Stop".
     $ErrorActionPreference = "Continue"
-    & $Gradle --quiet assembleDebug 2>&1 | ForEach-Object { "$_" }
+    $task = if ($Release) { "assembleRelease" } else { "assembleDebug" }
+    & $Gradle --quiet $task 2>&1 | ForEach-Object { "$_" }
     $code = $LASTEXITCODE
     $ErrorActionPreference = "Stop"
     if ($code -ne 0) { throw "gradle failed" }
 } finally { Pop-Location }
-$apk = Join-Path $Root "android\app\build\outputs\apk\debug\app-debug.apk"
+$apk = if ($Release) { Join-Path $Root "android\app\build\outputs\apk\release\app-release.apk" }
+       else { Join-Path $Root "android\app\build\outputs\apk\debug\app-debug.apk" }
 "APK: $apk ({0:N0} MB)" -f ((Get-Item $apk).Length / 1MB)
 
 if ($Install) {

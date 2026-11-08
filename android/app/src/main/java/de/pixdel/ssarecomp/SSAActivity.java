@@ -83,6 +83,13 @@ public class SSAActivity extends SDLActivity {
         if (drivers != null && drivers.length > 0) {
             java.util.Arrays.sort(drivers);
             args.add("--vulkan_driver=" + drivers[0].getAbsolutePath());
+        } else {
+            // The driver that comes with the app (Mesa Turnip, MIT; tools/android/build.ps1), on
+            // Adreno GPUs only: other GPUs keep their own driver.
+            File bundled = new File(getApplicationInfo().nativeLibraryDir, "libvulkan_turnip.so");
+            if (bundled.isFile() && isAdreno() && android.os.Build.VERSION.SDK_INT >= 30) {
+                args.add("--vulkan_driver=" + bundled.getAbsolutePath());
+            }
         }
 
         // Extra arguments for test runs: adb shell am start ... --es args "--a=1 --b=2"
@@ -92,6 +99,14 @@ public class SSAActivity extends SDLActivity {
         }
         Log.i(TAG, "arguments: " + args);
         return args.toArray(new String[0]);
+    }
+
+    /** Qualcomm SoC (Adreno GPU), the only GPUs Turnip drives. */
+    private static boolean isAdreno() {
+        String soc = android.os.Build.VERSION.SDK_INT >= 31 ? android.os.Build.SOC_MANUFACTURER : "";
+        String hw = android.os.Build.HARDWARE + " " + android.os.Build.BOARD;
+        return soc.equalsIgnoreCase("QTI") || soc.toLowerCase(java.util.Locale.ROOT).contains("qualcomm")
+                || hw.toLowerCase(java.util.Locale.ROOT).matches(".*(qcom|qualcomm|sm\\d|kalama|pineapple|sun|taro|lahaina).*");
     }
 
     /**

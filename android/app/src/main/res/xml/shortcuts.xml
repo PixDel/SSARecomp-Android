@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Long press on the icon: the setup screen again, to replace the disc or Lossless.dll. -->
+    <shortcut
+        android:shortcutId="setup"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/shortcut_setup">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="de.pixdel.ssarecomp"
+            android:targetClass="de.pixdel.ssarecomp.SetupActivity">
+            <extra android:name="manage" android:value="true" />
+        </intent>
+    </shortcut>
+</shortcuts>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_intro">Diese App enthält nichts vom Spiel. Wähle dein eigenes Xbox-360-Abbild von Skylanders: Spyro\'s Adventure (eine .iso-Datei, etwa 7,5 GB); seine Dateien werden einmal in die App kopiert. Danach kannst du die ISO löschen.</string>
+    <string name="setup_pick_iso">ISO auswählen…</string>
+    <string name="setup_repick_iso">Andere ISO auswählen…</string>
+    <string name="setup_pick_dll">Lossless.dll für Frame Generation (optional)…</string>
+    <string name="setup_repick_dll">Lossless.dll ersetzen…</string>
+    <string name="setup_play">Spielen</string>
+    <string name="setup_installed">Die Spieldateien sind installiert.</string>
+    <string name="setup_no_picker">Auf diesem Gerät gibt es keine Dateiauswahl.</string>
+    <string name="setup_reading">Lese das Abbild…</string>
+    <string name="setup_not_a_disc">Das ist kein Xbox-360-Abbild (ISO).</string>
+    <string name="setup_no_space">Nicht genug freier Speicher: %1$s nötig, %2$s frei.</string>
+    <string name="setup_copying">Kopiere Spieldateien: %1$s von %2$s</string>
+    <string name="setup_checking">Prüfe die Spielversion…</string>
+    <string name="setup_wrong_disc">Diese Disc ist nicht Skylanders: Spyro\'s Adventure (keine default.xex).</string>
+    <string name="setup_wrong_version">Diese Version der Disc wird nicht unterstützt. Nötig ist die Xbox-360-Disc von Skylanders: Spyro\'s Adventure (USA/Europa).</string>
+    <string name="setup_done">Fertig! Das Spiel ist installiert.</string>
+    <string name="setup_failed">Etwas ist schiefgegangen: %1$s</string>
+    <string name="setup_not_dll">Das ist nicht die Lossless.dll (aus dem Ordner von Lossless Scaling auf Steam).</string>
+    <string name="setup_dll_done">Lossless.dll kopiert. Frame Generation im Spiel einschalten: Menü → Grafik → Frame Generation.</string>
+    <string name="shortcut_setup">Spieldateien</string>
+</resources>

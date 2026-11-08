@@ -59,6 +59,32 @@ Needs: Visual Studio 2022 (for the Windows host tool), LLVM 19, Android NDK r30
    `github.com/Username404-59/dxbc` (`git config submodule.thirdparty/dxbc.url ...`).
 3. Package (and install): `tools\android\build.ps1 [-Install]`.
 
+## Installing (player)
+
+1. Install the APK (`SSARecomp-Android-<version>.apk` from the private repository's releases).
+2. Open it: the setup screen asks for your own Xbox 360 ISO of Spyro's Adventure (USA/Europe).
+   Its files (about 7.4 GB, without the console's `$SystemUpdate`) are copied into the app's
+   folder and `default.xex` is checked against `docs/game/default.xex.sha256`. The ISO can be
+   deleted afterwards. Needs the ISO's size in free storage.
+3. Optional: the same screen takes `Lossless.dll` (from Lossless Scaling on Steam) for frame
+   generation.
+4. "Spielen". Later starts go straight into the game; a long press on the app icon →
+   "Spieldateien" opens the setup screen again (another ISO, another DLL).
+
+The Turnip driver comes with the APK (`libvulkan_turnip.so`, used on Qualcomm/Adreno devices with
+Android 11+); a `.so` in `files/drivers/` still takes precedence.
+
+The setup screen (`SetupActivity`, `XisoExtractor`) is plain Java and loads none of the game's
+libraries; the extractor's output was compared file by file with extract-xiso's for the
+supported ISO (identical).
+
+## Release APK
+
+`tools\android\build.ps1 -Release` builds `app-release.apk`, signed with the key named in
+`C:/dev/keys/ssarecomp-release.properties` (outside the repository; `SSARECOMP_SIGNING=<file>`
+names another). The debug APK is signed with the debug key, so switching between the two needs an
+uninstall, and an uninstall deletes `Android/data/de.pixdel.ssarecomp` (game files, saves).
+
 ## Game files on the device
 
 Everything lives in the app's own folder (no storage permission, adb can fill it):
@@ -67,7 +93,7 @@ Everything lives in the app's own folder (no storage permission, adb can fill it
 Android/data/de.pixdel.ssarecomp/files/
   rom/            the extracted disc (rom/default.xex) - your own copy, never in git
   userdata/       saves, figures, logs (userdata/logs)
-  drivers/        the Turnip driver .so
+  drivers/        optional: a Turnip driver .so instead of the one in the APK
   ssarecomp.toml  settings (the settings menu writes it)
   Lossless.dll    optional, for frame generation - your own copy, never in git
 ```

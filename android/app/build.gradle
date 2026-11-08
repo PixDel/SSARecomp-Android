@@ -6,6 +6,17 @@ plugins {
 // app/src/main/jniLibs/arm64-v8a); SDL's Java side is used straight from the SDK's SDL3 checkout.
 def sdlJava = "../../thirdparty/rexglue-sdk/thirdparty/sdl3/android-project/app/src/main/java"
 
+// The supported discs' default.xex (the setup screen checks the player's disc against them).
+def xexHashes = file("../../docs/game/default.xex.sha256").readLines()
+        .collect { it.trim().split(/\s+/)[0] }.findAll { it ==~ /[0-9a-fA-F]{64}/ }.join(",")
+
+// Release signing: a keystore outside the repository, named in a properties file
+// (default C:/dev/keys/ssarecomp-release.properties: storeFile, storePassword, keyAlias,
+// keyPassword), or SSARECOMP_SIGNING=<path>. Without it the release APK stays unsigned.
+def signingFile = file(System.getenv("SSARECOMP_SIGNING") ?: "C:/dev/keys/ssarecomp-release.properties")
+def signingProps = new Properties()
+if (signingFile.isFile()) signingFile.withInputStream { signingProps.load(it) }
+
 android {
     namespace "de.pixdel.ssarecomp"
     compileSdk 35
@@ -14,9 +25,23 @@ android {
         applicationId "de.pixdel.ssarecomp"
         minSdk 29
         targetSdk 35
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 2
+        versionName "0.2.0"
         ndk { abiFilters "arm64-v8a" }
+        buildConfigField "String", "XEX_SHA256", "\"${xexHashes}\""
+    }
+
+    buildFeatures { buildConfig true }
+
+    signingConfigs {
+        if (signingProps.storeFile) {
+            release {
+                storeFile file(signingProps.storeFile)
+                storePassword signingProps.storePassword
+                keyAlias signingProps.keyAlias
+                keyPassword signingProps.keyPassword
+            }
+        }
     }
 
     sourceSets {
@@ -34,6 +59,10 @@ android {
         debug {
             debuggable true
             jniDebuggable true
+        }
+        release {
+            minifyEnabled false
+            if (signingProps.storeFile) signingConfig signingConfigs.release
         }
     }
 }

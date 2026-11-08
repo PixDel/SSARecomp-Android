@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Spyro\'s Adventure</string>
+    <string name="setup_intro">This app contains no part of the game. Pick your own Xbox 360 disc image of Skylanders: Spyro\'s Adventure (an .iso file, about 7.5 GB); its files are copied into the app once. Afterwards you can delete the ISO.</string>
+    <string name="setup_pick_iso">Choose ISO…</string>
+    <string name="setup_repick_iso">Choose another ISO…</string>
+    <string name="setup_pick_dll">Lossless.dll for frame generation (optional)…</string>
+    <string name="setup_repick_dll">Replace Lossless.dll…</string>
+    <string name="setup_play">Play</string>
+    <string name="setup_installed">The game files are installed.</string>
+    <string name="setup_no_picker">No file picker found on this device.</string>
+    <string name="setup_reading">Reading the disc image…</string>
+    <string name="setup_not_a_disc">This is not an Xbox 360 disc image (ISO).</string>
+    <string name="setup_no_space">Not enough free storage: %1$s needed, %2$s free.</string>
+    <string name="setup_copying">Copying game files: %1$s of %2$s</string>
+    <string name="setup_checking">Checking the game version…</string>
+    <string name="setup_wrong_disc">This disc is not Skylanders: Spyro\'s Adventure (no default.xex).</string>
+    <string name="setup_wrong_version">This version of the disc is not supported. You need the Xbox 360 disc of Skylanders: Spyro\'s Adventure (USA/Europe).</string>
+    <string name="setup_done">Done! The game is installed.</string>
+    <string name="setup_failed">Something went wrong: %1$s</string>
+    <string name="setup_not_dll">This is not Lossless.dll (from Lossless Scaling\'s folder on Steam).</string>
+    <string name="setup_dll_done">Lossless.dll copied. Switch frame generation on in the game: Menu → Grafik → Frame Generation.</string>
+    <string name="shortcut_setup">Game files</string>
 </resources>

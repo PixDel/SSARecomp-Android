@@ -242,8 +242,13 @@ class SsarecompApp : public rex::ReXApp {
     // there (#38, the colleague and the owner). Found with readback_resolve_log off and on: the
     // resolves come in the same order, this one the 10th 32-bit one both times. Neither address is
     // a resolve destination in the other mode, so the list costs nothing extra.
+    // The Android sizes of scene_size move it again (the blocky shadows on the tablet, 2026-11-08):
+    // 560x352 -> 0x1a3a0000 (576x352), 700x440 -> 0x1a220000 (704x448), 840x528 -> 0x1a020000
+    // (864x544). Measured on Windows in the hub with readback_resolve_log at each size: the same
+    // order of resolves, each address only at its own size. Another scene_size needs its own.
     SetDefaultIfUnset("readback_resolve", "fast");
-    SetDefaultIfUnset("readback_resolve_addresses", "0x19bc0000,0x19a80000");
+    SetDefaultIfUnset("readback_resolve_addresses",
+                      "0x19bc0000,0x19a80000,0x1a3a0000,0x1a220000,0x1a020000");
     // At resolution scale 2 and up, the depth-of-field composite turns the pixel position into a
     // texture coordinate the D3D9 way, (position + 0.5) / size. With the SDK's corner position it
     // read the scene, its depth and the blur one host pixel off (1.5 at scale 3), and close objects
