@@ -109,6 +109,39 @@ public class SSAActivity extends SDLActivity {
         });
     }
 
+    private static native void nativeBackPressed();
+
+    /**
+     * Android's Back (gesture or button): opens the settings menu, or closes the open one, instead
+     * of leaving the game; from the menu, "Spiel beenden" closes it properly.
+     */
+    // SDL takes Back as a key (its surface consumes it), so onBackPressed never comes: caught here
+    // first. A controller's own buttons (gamepad sources) stay SDL's.
+    @Override
+    public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+        if (event.getKeyCode() == android.view.KeyEvent.KEYCODE_BACK) {
+            int source = event.getSource();
+            boolean pad = (source & android.view.InputDevice.SOURCE_GAMEPAD) == android.view.InputDevice.SOURCE_GAMEPAD
+                    || (source & android.view.InputDevice.SOURCE_JOYSTICK) == android.view.InputDevice.SOURCE_JOYSTICK;
+            if (!pad) {
+                if (event.getAction() == android.view.KeyEvent.ACTION_UP && !event.isCanceled()) {
+                    onBackPressed();
+                }
+                return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        try {
+            nativeBackPressed();
+        } catch (UnsatisfiedLinkError e) {
+            super.onBackPressed();  // the game's library isn't loaded (yet)
+        }
+    }
+
     /** Qualcomm SoC (Adreno GPU), the only GPUs Turnip drives. */
     private static boolean isAdreno() {
         String soc = android.os.Build.VERSION.SDK_INT >= 31 ? android.os.Build.SOC_MANUFACTURER : "";

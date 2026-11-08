@@ -117,6 +117,7 @@ frames aren't evenly spaced. Off by default.
 
 ## Not there yet
 
+- **Cheats** (Menu → Extras) don't seem to work yet on Android.
 - A real USB Portal of Power (the virtual portal menu works).
 - GPUs other than Adreno.
 - Online play.
