@@ -52,9 +52,9 @@ in Ghidra first.
 3. Find the function involved: `just ghidra dump <address>`.
 4. Decide: codegen fix in `config/default.toml`, a kernel stub, or a hook.
 5. Add the fix with its comment, rebuild, run again.
-6. One fix per commit (`fix: ...`), and a line in [STATUS.md](STATUS.md) at the end of the session.
+6. One fix per commit (`fix: ...`).
 
-If a problem looks like a ReXGlue bug rather than a game quirk, note it in STATUS.md and do not
+If a problem looks like a ReXGlue bug rather than a game quirk, note it and do not
 patch the submodule on `main`; use a clearly named branch.
 
 ## Testing
@@ -65,4 +65,4 @@ patch the submodule on `main`; use a clearly named branch.
   `SoftwarePortal` protocol state machine, Xbox frame conversion). They need neither ReXGlue nor the
   game.
 - Anything that needs the real game, a real figure or real USB hardware is tested by hand, and the
-  result goes into STATUS.md.
+  result is noted.

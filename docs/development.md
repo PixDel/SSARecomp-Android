@@ -1,6 +1,6 @@
 # Development
 
-Building SSARecomp from source. There is no playable build yet; see [STATUS.md](STATUS.md).
+Building SSARecomp from source. The Android build is described in [android.md](android.md).
 
 ## What you need
 
@@ -164,7 +164,7 @@ two captures), `dump` (render targets after given events as PNG) and `inspect` (
 input textures of given draws), `timings` (GPU time per action, grouped by kind and target) and
 `overhead` (GPU time of render target emulation: ownership transfers, EDRAM dumps, resolves). Host render targets with the RTV path are EDRAM-shaped (for example
 1040x2528): the surface at an EDRAM base starts at row 0 of the target created for that base. This
-is how the RTV black characters were found (docs/STATUS.md, 2026-10-17).
+is how the RTV black characters were found (tsapZ/SSARecomp tsapZ/SSARecomp docs/STATUS.md, 2026-10-17).
 
 ## Troubleshooting
 

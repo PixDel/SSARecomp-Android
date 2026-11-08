@@ -1,37 +1,39 @@
-# CLAUDE.md: SSARecomp
-
-The rules every Skylanders repository follows (tests only on copies of the owner's data, git and
-GitHub, shared code, releases) are in Core of Light's maintainer/RULES.md
-(https://github.com/tsapZ/SkylandersCoreOfLight/blob/main/maintainer/RULES.md):
-
-@../../SkylandersCoreOfLight/SkylandersCoreOfLight/maintainer/RULES.md
+# CLAUDE.md: SSARecomp for Android
 
 ## Goal
 
-Native Windows port of Skylanders: Spyro's Adventure (Xbox 360, `rom/default.xex`) via ReXGlue static
-recompilation, one of six built the same way: the SDK (`thirdparty/rexglue-sdk`) and the app,
-portal, menus, disc check and test tools (`thirdparty/skylanders-portal`) are shared. The game
-stays complete on its own; Core of Light, the launcher, only starts it.
+Android port (arm64, Vulkan) by PixDel of tsapZ's [SSARecomp](https://github.com/tsapZ/SSARecomp),
+the ReXGlue static recompilation of Skylanders: Spyro's Adventure (Xbox 360, `rom/default.xex`).
+The game code, portal, menus and fixes come from SSARecomp and the shared libraries
+(`thirdparty/rexglue-sdk`, `thirdparty/skylanders-portal`, both on their `android` branches);
+this repository adds the Android build, the app (`android/`), drivers, touch and tablet tuning.
+docs/android.md describes all of it.
 
-## This game
+## Rules
 
-- Its file formats differ from the later games' (docs/game/spyros-adventure.md).
-- If it differs technically from the other games in a significant way, report it and adapt the
-  plan.
+- Never commit game data: the extracted disc (`rom/`), generated code (`generated/` except
+  `rexglue.cmake`), the user's Lossless.dll, signing keys (`C:/dev/keys`), driver `.so` files.
+- Tests run on copies of the owner's data only: an own `--user_data_root`,
+  `--portal_mode=software`, muted audio. Close the app on the test device afterwards.
+- Work goes to the `android` branches of PixDel's repositories. No pull requests or pushes to
+  tsapZ's or other upstream repositories unless the owner asks.
+- Problems of the Windows version belong to tsapZ/SSARecomp; changes to shared code that would
+  help it too are worth mentioning to the owner.
 
 ## Build
 
-From the **x64 Native Tools Command Prompt for VS 2022** (`release.py build` sets that up itself):
+Windows host tools first (codegen runs on Windows), from the x64 Native Tools Command Prompt for
+VS 2022:
 
     just submodules        # git submodule update --init --recursive
-    just build-release     # configures on first run, then builds
-    just regen-release     # rerun codegen from rom/default.xex, reconfigure, rebuild
-    just test-release
-    just play-release
-    just --list            # everything else: packaging, scripted runs, Ghidra, RenderDoc, logs
+    just build-release     # Windows build, also needed for the codegen host tool
 
-## Status convention
+Then the Android side (docs/android.md has the full commands):
 
-`docs/STATUS.md` is updated at the end of every session (only what a build actually did);
-`docs/roadmap.md` when an issue is closed or the plan changes, and the README's "How far it is"
-with it.
+    cmake --build out/build/android-arm64 --target ssarecompiled rexgpu-xenos
+    tools\android\build.ps1 -Release [-Install]
+
+## Test device
+
+Honor MagicPad 2 (Snapdragon 8s Gen 3, Adreno 735, 3000x1920, Android 16), bundled Turnip T30
+driver. Frame rates in the README and docs/android.md come from it.

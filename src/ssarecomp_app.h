@@ -140,7 +140,7 @@ class SsarecompApp : public rex::ReXApp {
     // presses unless this is on.
     SetDefault("guide_button", "true");
     // 60 FPS unless the settings file says otherwise (the owner's wish, 2026-10-21): the game's rate
-    // follows frame_rate_limit, and it keeps its speed at more frames (measured, docs/STATUS.md).
+    // follows frame_rate_limit, and it keeps its speed at more frames (measured, tsapZ/SSARecomp docs/STATUS.md).
     // "30 as on the console" in the menu is the limit 30, so it stays when chosen.
     SetDefault("frame_rate_limit", "60");
     // The game waits for the next vblank after each frame, so with a 60 Hz vblank a frame that takes
@@ -148,7 +148,7 @@ class SsarecompApp : public rex::ReXApp {
     // measured here: 30.0 FPS at 60 Hz, 50.7 at 240 Hz in Chapter 1, 2026-10-24). A 240 Hz guest
     // vblank lets it go at the next one; frame_rate_limit still caps the rate. Safe here: the game
     // keeps its speed with a faster vblank (it ran at frame_rate_limit 144 and 240 with that vblank
-    // at normal speed, docs/STATUS.md).
+    // at normal speed, tsapZ/SSARecomp docs/STATUS.md).
     SetDefault("guest_vblank_rate", "240");
     // The final picture sharpened with CAS (the menu's "Quality" preset) unless the settings file
     // or the command line sets present_effect (the owner asked for the best picture by default,

@@ -325,7 +325,7 @@ SettingsPage FrameRatePage() {
   // the SDK runs at 30 Hz without a limit (and a frame that misses a 60 Hz vblank waits for the
   // next). With a higher limit it runs as fast as the PC allows: 50-91 FPS in Chapter 1 here
   // (1080p, scale 2), the opening cutscenes take the same time (72.6 s at 30 FPS, 71.5 s), and
-  // walking covers the same ground. docs/STATUS.md, 2026-10-20. The portal screen's light and
+  // walking covers the same ground. tsapZ/SSARecomp docs/STATUS.md, 2026-10-20. The portal screen's light and
   // sparks step once per frame (#26), but the owner's video of the console shows that screen as
   // fast; at 60 the owner found the bounce pads and coins as in Xbox 360 videos (2026-10-21), so
   // 60 is the default (app header).

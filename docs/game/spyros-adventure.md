@@ -30,7 +30,7 @@ What we know about the game and the dump this project targets, and what still ha
   the portal menu draws its own cards until this game's formats are read.
 - **It sets up the GPU ring buffer three times** (`VdInitializeRingBuffer`, when it recreates its
   device); Swap Force does once. The SDK needed a fix for that (fork branch
-  `fix/ring-buffer-reinit`, docs/STATUS.md 2026-10-20).
+  `fix/ring-buffer-reinit`, tsapZ/SSARecomp docs/STATUS.md 2026-10-20).
 - **Its Wwise audio waits for every voice to play to its end**, which needed an SDK fix for the
   last frame of XMA streams (fork branch `fix/xma-stream-end`).
 - **The portal API is resolved at run time** (`XexGetProcedureAddress`, XAM ordinals 0x4A1 and
@@ -43,7 +43,7 @@ What we know about the game and the dump this project targets, and what still ha
   thread spends the frame in the D3D fence wait (`sub_822A05F0` from `sub_822A95C0`). Measured
   later (2026-10-20): a frame takes about 19 ms on the test PC, so at 60 Hz every frame misses one
   vblank and waits for the next; with a higher limit (144, 240) it runs at 50-91 FPS in Chapter 1,
-  and the game's speed stays the same (docs/STATUS.md). There is no second wait to remove.
+  and the game's speed stays the same (tsapZ/SSARecomp docs/STATUS.md). There is no second wait to remove.
 - **Its portal prompt** is one fixed object (`0x82C569B0`, see src/game/portal_prompt_watch.cpp),
   not Swap Force's CMagicMoment. Which screen is up is read from the shown text's hash (HUD
   `0x82C56AF8` +3260 -> +376 -> +432), because the object's fields look the same for the request
